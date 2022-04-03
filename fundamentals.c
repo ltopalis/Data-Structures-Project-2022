@@ -154,4 +154,6 @@ int swap(void *a, void *b, DATA_TYPE t)
     }
     
     free(temp);
+    
+    return TRUE;
 }
