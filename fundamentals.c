@@ -11,7 +11,8 @@ int swap(void *a, void *b, DATA_TYPE t)
     {
     case INT:
         temp = malloc(sizeof(int));
-        if(!temp){
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -21,7 +22,8 @@ int swap(void *a, void *b, DATA_TYPE t)
         break;
     case DOUBLE:
         temp = malloc(sizeof(double));
-        if(!temp){
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -31,7 +33,8 @@ int swap(void *a, void *b, DATA_TYPE t)
         break;
     case FLOAT:
         temp = malloc(sizeof(float));
-        if(!temp){
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -41,7 +44,8 @@ int swap(void *a, void *b, DATA_TYPE t)
         break;
     case CHAR:
         temp = malloc(sizeof(char));
-        if(!temp){
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -51,7 +55,8 @@ int swap(void *a, void *b, DATA_TYPE t)
         break;
     case SHORT_INT:
         temp = malloc(sizeof(short int));
-        if(!temp){
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -61,7 +66,8 @@ int swap(void *a, void *b, DATA_TYPE t)
         break;
     case LONG_INT:
         temp = malloc(sizeof(long int));
-        if(!temp){
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -71,7 +77,8 @@ int swap(void *a, void *b, DATA_TYPE t)
         break;
     case LONG_LONG_INT:
         temp = malloc(sizeof(long long int));
-        if(!temp){
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -81,7 +88,8 @@ int swap(void *a, void *b, DATA_TYPE t)
         break;
     case LONG_DOUBLE:
         temp = malloc(sizeof(long double));
-        if(!temp){
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -91,7 +99,8 @@ int swap(void *a, void *b, DATA_TYPE t)
         break;
     case UNSIGNED_CHAR:
         temp = malloc(sizeof(unsigned char));
-        if(!temp){
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -101,7 +110,8 @@ int swap(void *a, void *b, DATA_TYPE t)
         break;
     case UNSIGNED_SHORT_INT:
         temp = malloc(sizeof(unsigned short int));
-        if(!temp){
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -111,7 +121,8 @@ int swap(void *a, void *b, DATA_TYPE t)
         break;
     case UNSIGNED_INT:
         temp = malloc(sizeof(unsigned int));
-        if(!temp){
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -121,7 +132,8 @@ int swap(void *a, void *b, DATA_TYPE t)
         break;
     case UNSIGNED_LONG_LONG_INT:
         temp = malloc(sizeof(unsigned long long int));
-        if(!temp){
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -130,20 +142,23 @@ int swap(void *a, void *b, DATA_TYPE t)
         *(unsigned long long int *)b = *(unsigned long long int *)temp;
         break;
     case STRING:
-        temp = malloc(sizeof(char)*strlen((char *)a));
-        if(!temp){
+        temp = malloc(sizeof(char) * strlen((char *)a));
+        if (!temp)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
         strcpy((char *)temp, (char *)a);
-        a = realloc((char *)a, sizeof(char)*strlen((char *)b));
-        if(!a){
+        a = realloc((char *)a, sizeof(char) * strlen((char *)b));
+        if (!a)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
         strcpy((char *)a, (char *)b);
-        b = realloc((char *)b, sizeof(char)*strlen((char *)temp));
-        if(!a){
+        b = realloc((char *)b, sizeof(char) * strlen((char *)temp));
+        if (!a)
+        {
             fprintf(stderr, "Error Allocating memory!");
             return FALSE;
         }
@@ -152,8 +167,17 @@ int swap(void *a, void *b, DATA_TYPE t)
     default:
         fprintf(stderr, "invalid data type");
     }
-    
+
     free(temp);
-    
+
+    return TRUE;
+}
+
+int check_allocation(void *p){
+    if(!p){
+        fprintf(stderr, "Error allocating memory!");
+        return FALSE;
+    }
+
     return TRUE;
 }
