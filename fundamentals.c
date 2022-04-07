@@ -173,8 +173,10 @@ int swap(void *a, void *b, DATA_TYPE t)
     return TRUE;
 }
 
-int check_allocation(void *p){
-    if(!p){
+int check_allocation(void *p)
+{
+    if (!p)
+    {
         fprintf(stderr, "Error allocating memory!");
         return FALSE;
     }

@@ -21,8 +21,22 @@ enum DATA_TYPE
     STRING
 };
 
+struct table_data
+{
+    time_t date;
+    double temp;
+    double PO4uM;
+    double SiO3uM;
+    double NO2uM;
+    double NO3uM;
+    double Salnty;
+    double O2ml_L;
+};
+
 typedef enum DATA_TYPE DATA_TYPE;
+typedef struct table_data table_data;
 
 int swap(void *a, void *b, DATA_TYPE t);
+int check_allocation(void *p);
 
 #endif
