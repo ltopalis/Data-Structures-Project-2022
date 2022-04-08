@@ -5,15 +5,15 @@
 #include "fundamentals.h"
 #include "file_manager.h"
 
-
 int main()
 {
     table_data *ocean_data = (table_data *)malloc(sizeof(table_data) * DATA);
     char *pinakas = (char *)malloc(sizeof(char) * LINE_SIZE);
     open_file("ocean.csv", ocean_data, pinakas);
     int i;
-    
-    for(i=0; i<1405; i++){
+
+    for (i = 0; i < 1405; i++)
+    {
         printf("\n%s", ctime(&ocean_data[i].date));
         printf("\t%.3lf", ocean_data[i].temp);
         printf("\t%.3lf", ocean_data[i].PO4uM);
@@ -24,7 +24,7 @@ int main()
         printf("\t%.3lf", ocean_data[i].O2ml_L);
     }
     printf("\n");
-    
+
     free(pinakas);
     free(ocean_data);
 }
