@@ -25,10 +25,10 @@ int open_file(char *filename, table_data *data_array, char *contents)
         fprintf(stderr, "File could not be open!");
         return FALSE;
     }
-    fgets(pinakas, DATA, fp);
+    pinakas = fgets(pinakas, LINE_SIZE, fp);
     strcpy(contents, pinakas);
 
-    while (fgets(pinakas, DATA, fp) != NULL)
+    while (fgets(pinakas, LINE_SIZE, fp) != NULL)
     {
         strcpy(date_str, strtok(pinakas, ","));
         data_array[i].temp = atof(strtok(NULL, ","));

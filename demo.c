@@ -8,8 +8,8 @@
 
 int main()
 {
-    table_data *ocean_data = (table_data *)malloc(sizeof(table_data) * 1405);
-    char *pinakas = (char *)malloc(sizeof(char) * 100);
+    table_data *ocean_data = (table_data *)malloc(sizeof(table_data) * DATA);
+    char *pinakas = (char *)malloc(sizeof(char) * LINE_SIZE);
     open_file("ocean.csv", ocean_data, pinakas);
     int i;
     
