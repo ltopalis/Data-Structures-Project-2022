@@ -1,0 +1,136 @@
+#include <conio.h>
+#include <stdio.h>
+#include <string.h>
+struct metrhseis{
+  char Date;
+  float T_degC;
+  float POuM;
+  float SiO3uM;
+  float NO2uM;
+  float NO3uM;
+  float Salnty;
+  float O2ml_L;
+};
+int main()
+{   struct metrhseis info1;
+
+	FILE* f = fopen("ocean.csv", "r");
+
+	if (!f)
+		printf("Can not open file\n");
+
+	else {
+
+		char array[11248];
+        int row = 0;
+		int column = 0;
+
+		while (fgets(array,11248, f)) {
+			column = 0;
+			row++;
+
+
+			if (row == 1)
+				continue;
+			char* ob = strtok(array, ", ");
+
+			while (ob) {
+				// Column 1
+                if (column == 0) {
+                    info1.Date=ob;
+					printf("Date :");
+				}
+
+				// Column 2
+				if (column == 1) {
+                    info1.T_degC=atof(ob);
+					printf("\tT_degC :");
+				}
+
+				// Column 3
+				if (column == 2) {
+                    info1.POuM=atof(ob);
+					printf("\tPO4uM :");
+				}
+				// Column 4
+				if (column == 3) {
+				    info1.SiO3uM=atof(ob);
+					printf("\tSiO3uM :");
+				}
+				// Column 5
+				if (column == 4) {
+				    info1.NO2uM=atof(ob);
+					printf("\tNO2uM :");
+				}
+				// Column 6
+				if (column == 5) {
+				    info1.NO3uM=atof(ob);
+					printf("\tNO3uM :");
+				}
+				// Column 7
+				if (column == 6) {
+				    info1.Salnty=atof(ob);
+					printf("\tSalnty :");
+				}
+				// Column 8
+				if (column == 7) {
+				    info1.Salnty=atof(ob);
+					printf("\tSalnty :");
+				}
+
+				printf("%s", ob);
+				ob = strtok(NULL, ", ");
+				column++;
+			}
+
+			printf("\n");
+		}
+
+		fclose(f);
+		int i;
+		int n;
+		Heapify(info1.POuM,i,n);
+
+	}
+	return 0;
+}
+void Heapify(int array[],int node,int heap_size){
+    int bigger=node;//root
+    int left = 2 *node + 1; // node is an index in array[]
+    int right = 2 *node + 2;
+    // If left child is bigger than root
+    if (left < heap_size&& array[left] > array[bigger]) bigger= left;
+
+    // If right child is bigger than (int) bigger
+    if (right < heap_size && array[right] > array[bigger])
+       bigger= right;
+
+    // If bigger is not root
+    if (bigger != node) {
+        swap(&array[node], &array[bigger]);
+
+    //  heapify the sub-tree
+        Heapify(array, bigger, heap_size);
+    }
+}
+
+void swap(int *x, int *y){
+  int temp=*x;
+  *x=*y;
+  *y=temp;
+
+}
+
+void HeapSort(int array[], int heap_size){
+    // Build heap
+
+
+
+
+
+
+
+
+
+
+}
