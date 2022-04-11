@@ -31,15 +31,7 @@ int main()
   ocean values[1406]; // array
 
   int i = 0;
-  /*
-  while (fgets(buff, 1024, fp)) //
-  {
-    printf("%s\n", buff);
-  }
-*/
 
-  rewind(fp);
-  i = 0;
   while (fgets(buff, 1406, fp))
   {
     field_count = 0;
