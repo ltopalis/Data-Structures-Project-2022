@@ -28,7 +28,7 @@ int open_file(char *filename, table_data *data_array, char *contents)
     pinakas = fgets(pinakas, LINE_SIZE, fp);
     strcpy(contents, pinakas);
 
-    while (fgets(pinakas, LINE_SIZE, fp) != NULL)
+    while (fgets(pinakas, LINE_SIZE - 1, fp) != NULL)
     {
         strcpy(date_str, strtok(pinakas, ","));
         data_array[i].temp = atof(strtok(NULL, ","));
