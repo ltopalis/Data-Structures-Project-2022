@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "fundamentals.h"
 
 int swap(void *a, void *b, DATA_TYPE t)
@@ -164,6 +165,17 @@ int swap(void *a, void *b, DATA_TYPE t)
         }
         strcpy((char *)b, (char *)temp);
         break;
+    case TABLE_DATA:
+        temp = malloc(sizeof(table_data));
+        if (!temp)
+        {
+            fprintf(stderr, "Error Allocating memory!");
+            return FALSE;
+        }
+        *(table_data *)temp = *(table_data *)a;
+        *(table_data *)a = *(table_data *)b;
+        *(table_data *)b = *(table_data *)temp;
+        break;
     default:
         fprintf(stderr, "invalid data type");
     }
@@ -182,4 +194,25 @@ int check_allocation(void *p)
     }
 
     return TRUE;
+}
+
+void print_array(table_data *array, int n)
+{
+    int i;
+    char *time_str = (char *)malloc(sizeof(char) * 11);
+
+    for (i = 0; i < n; i++)
+    {
+        strftime(time_str, 10, "%x", gmtime(&array[i].date));
+        printf("\n%s  ", time_str);
+        printf("%6.3lf  ", array[i].temp);
+        printf("%6.3lf  ", array[i].PO4uM);
+        printf("%6.3lf  ", array[i].SiO3uM);
+        printf("%6.3lf  ", array[i].NO2uM);
+        printf("%6.3lf  ", array[i].NO3uM);
+        printf("%6.3lf  ", array[i].Salnty);
+        printf("%6.3lf\n", array[i].O2ml_L);
+    }
+    printf("\n");
+    free(time_str);
 }
