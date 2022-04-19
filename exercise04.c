@@ -21,11 +21,25 @@ int main()
     }
 
     bubble_sort(ocean, DATA, TIME);
-    print_array(ocean, DATA);
 
-    t.tm_mon = 1 - 1;
-    t.tm_mday = 7;
-    t.tm_year = 2005 - 1900;
+    do
+    {
+        printf("Give month: ");
+        scanf("%d", &t.tm_mon);
+    } while (!(t.tm_mon > 0 && t.tm_mon < 13));
+    do
+    {
+        printf("Give day: ");
+        scanf("%d", &t.tm_mday);
+    } while (!(t.tm_mday > 0 && t.tm_mday < 32));
+    do
+    {
+        printf("Give year: ");
+        scanf("%d", &t.tm_year);
+    } while (!(t.tm_year > 0));
+
+    t.tm_mon -= 1;
+    t.tm_year -= 1900;
     t.tm_sec = 0;  /* seconds,  range 0 to 59          */
     t.tm_min = 0;  /* minutes, range 0 to 59           */
     t.tm_hour = 0; /* hours, range 0 to 23             */
@@ -33,8 +47,8 @@ int main()
     t.tm_yday = 0; /* day in the year, range 0 to 365  */
     t.tm_isdst = -1;
 
-    k = Linear_Search(ocean, mktime(&t), 0, DATA - 1);
-    printf("%d ", k);
+    k = interpolation_search(ocean, mktime(&t), DATA);
+
     if (k != -1)
         printf("%d/%d/%d\n", ocean[k].date.tm_mon + 1, ocean[k].date.tm_mday, ocean[k].date.tm_year + 1900);
     else
@@ -44,4 +58,3 @@ int main()
     free(contents);
     return 0;
 }
-
