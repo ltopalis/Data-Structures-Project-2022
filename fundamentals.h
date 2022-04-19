@@ -22,7 +22,8 @@ enum DATA_TYPE
     TABLE_DATA
 };
 
-enum FIELD{
+enum FIELD
+{
     TIME,
     TEMPERATURE,
     PHOSPHATE
