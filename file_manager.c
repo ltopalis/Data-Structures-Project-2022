@@ -10,12 +10,9 @@ int open_file(char *filename, table_data *data_array, char *contents)
     FILE *fp;
     char *pinakas = (char *)malloc(sizeof(char) * LINE_SIZE);
     char *date_str = (char *)malloc(sizeof(char) * (10 + 1));
-    struct tm *mytime = (struct tm *)malloc(sizeof(struct tm));
     if (check_allocation((char *)pinakas) == FALSE)
         return FALSE;
     if (check_allocation((char *)date_str) == FALSE)
-        return FALSE;
-    if (check_allocation((struct tm *)mytime) == FALSE)
         return FALSE;
     int i = 0;
 
@@ -38,26 +35,21 @@ int open_file(char *filename, table_data *data_array, char *contents)
         data_array[i].NO3uM = atof(strtok(NULL, ","));
         data_array[i].Salnty = atof(strtok(NULL, ","));
         data_array[i].O2ml_L = atof(strtok(NULL, ","));
-        mytime->tm_hour = 0;
-        mytime->tm_isdst = 0;
-        mytime->tm_mday = 0;
-        mytime->tm_min = 0;
-        mytime->tm_sec = 0;
-        mytime->tm_wday = 0;
-        mytime->tm_wday = 0;
-        mytime->tm_yday = 0;
-        mytime->tm_zone = NULL;
-        mytime->tm_mon = atoi(strtok(date_str, "/")) - 1;
-        mytime->tm_mday = atoi(strtok(NULL, "/"));
-        mytime->tm_year = atoi(strtok(NULL, "/")) - 1900;
-        data_array[i].date = mktime(mytime);
+        data_array[i].date.tm_mon = atoi(strtok(date_str, "/")) - 1;       /* month, range 0 to 11             */
+        data_array[i].date.tm_mday = atoi(strtok(NULL, "/"));              /* day of the month, range 1 to 31  */
+        data_array[i].date.tm_year = atoi(strtok(NULL, "/")) - 1900;       /* The number of years since 1900   */
+        data_array[i].date.tm_sec = 0;                                     /* seconds,  range 0 to 59          */
+        data_array[i].date.tm_min = 0;                                     /* minutes, range 0 to 59           */
+        data_array[i].date.tm_hour = 0;                                    /* hours, range 0 to 23             */
+        data_array[i].date.tm_wday = 0;                                    /* day of the week, range 0 to 6    */
+        data_array[i].date.tm_yday = 0;                                    /* day in the year, range 0 to 365  */
+        data_array[i].date.tm_isdst = -1;                                   /* daylight saving time             */
         i++;
     }
 
     fclose(fp);
     free(pinakas);
     free(date_str);
-    free(mytime);
 
     return TRUE;
 }
