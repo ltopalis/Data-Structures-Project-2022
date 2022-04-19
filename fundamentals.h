@@ -18,12 +18,19 @@ enum DATA_TYPE
     UNSIGNED_SHORT_INT,
     UNSIGNED_INT,
     UNSIGNED_LONG_LONG_INT,
-    STRING
+    STRING,
+    TABLE_DATA
+};
+
+enum FIELD{
+    TIME,
+    TEMPERATURE,
+    PHOSPHATE
 };
 
 struct table_data
 {
-    time_t date;
+    struct tm date;
     double temp;
     double PO4uM;
     double SiO3uM;
@@ -34,9 +41,11 @@ struct table_data
 };
 
 typedef enum DATA_TYPE DATA_TYPE;
+typedef enum FIELD FIELD;
 typedef struct table_data table_data;
 
 int swap(void *a, void *b, DATA_TYPE t);
 int check_allocation(void *p);
+void print_array(table_data *array, int n);
 
 #endif

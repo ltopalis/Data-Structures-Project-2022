@@ -203,7 +203,7 @@ void print_array(table_data *array, int n)
 
     for (i = 0; i < n; i++)
     {
-        strftime(time_str, 10, "%x", gmtime(&array[i].date));
+        strftime(time_str, 11, "%m/%d/%Y", &array[i].date);
         printf("\n%s  ", time_str);
         printf("%6.3lf  ", array[i].temp);
         printf("%6.3lf  ", array[i].PO4uM);
@@ -211,7 +211,7 @@ void print_array(table_data *array, int n)
         printf("%6.3lf  ", array[i].NO2uM);
         printf("%6.3lf  ", array[i].NO3uM);
         printf("%6.3lf  ", array[i].Salnty);
-        printf("%6.3lf\n", array[i].O2ml_L);
+        printf("%6.3lf  ", array[i].O2ml_L);
     }
     printf("\n");
     free(time_str);
