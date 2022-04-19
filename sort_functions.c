@@ -9,6 +9,12 @@ void bubble_sort(table_data *pinakas, int n, FIELD t)
 
 	switch (t)
 	{
+	case TIME:
+		for (i = 0; i < n; i++)
+			for (j = n - 1; j >= i + 1; j--)
+				if (difftime(mktime(&pinakas[j].date), mktime(&pinakas[j - 1].date)) < 0.0)
+					swap(&pinakas[j], &pinakas[j - 1], TABLE_DATA);
+		break;
 	case TEMPERATURE:
 		for (i = 0; i < n; i++)
 			for (j = n - 1; j >= i + 1; j--)
