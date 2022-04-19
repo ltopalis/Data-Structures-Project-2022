@@ -35,15 +35,15 @@ int open_file(char *filename, table_data *data_array, char *contents)
         data_array[i].NO3uM = atof(strtok(NULL, ","));
         data_array[i].Salnty = atof(strtok(NULL, ","));
         data_array[i].O2ml_L = atof(strtok(NULL, ","));
-        data_array[i].date.tm_mon = atoi(strtok(date_str, "/")) - 1;       /* month, range 0 to 11             */
-        data_array[i].date.tm_mday = atoi(strtok(NULL, "/"));              /* day of the month, range 1 to 31  */
-        data_array[i].date.tm_year = atoi(strtok(NULL, "/")) - 1900;       /* The number of years since 1900   */
-        data_array[i].date.tm_sec = 0;                                     /* seconds,  range 0 to 59          */
-        data_array[i].date.tm_min = 0;                                     /* minutes, range 0 to 59           */
-        data_array[i].date.tm_hour = 0;                                    /* hours, range 0 to 23             */
-        data_array[i].date.tm_wday = 0;                                    /* day of the week, range 0 to 6    */
-        data_array[i].date.tm_yday = 0;                                    /* day in the year, range 0 to 365  */
-        data_array[i].date.tm_isdst = -1;                                   /* daylight saving time             */
+        data_array[i].date.tm_mon = atoi(strtok(date_str, "/")) - 1; /* month, range 0 to 11             */
+        data_array[i].date.tm_mday = atoi(strtok(NULL, "/"));        /* day of the month, range 1 to 31  */
+        data_array[i].date.tm_year = atoi(strtok(NULL, "/")) - 1900; /* The number of years since 1900   */
+        data_array[i].date.tm_sec = 0;                               /* seconds,  range 0 to 59          */
+        data_array[i].date.tm_min = 0;                               /* minutes, range 0 to 59           */
+        data_array[i].date.tm_hour = 0;                              /* hours, range 0 to 23             */
+        data_array[i].date.tm_wday = 0;                              /* day of the week, range 0 to 6    */
+        data_array[i].date.tm_yday = 0;                              /* day in the year, range 0 to 365  */
+        data_array[i].date.tm_isdst = -1;                            /* daylight saving time             */
         i++;
     }
 
