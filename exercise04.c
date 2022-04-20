@@ -13,6 +13,7 @@ int main()
     table_data *ocean = (table_data *)malloc(sizeof(table_data) * DATA);
     char *contents = (char *)malloc(sizeof(char) * LINE_SIZE);
     struct tm t;
+    clock_t c1, c2;
 
     if (!open_file("ocean.csv", ocean, contents))
     {
@@ -25,17 +26,17 @@ int main()
     do
     {
         printf("Give month: ");
-        scanf("%d", &t.tm_mon);
+        k = scanf("%d", &t.tm_mon);
     } while (!(t.tm_mon > 0 && t.tm_mon < 13));
     do
     {
         printf("Give day: ");
-        scanf("%d", &t.tm_mday);
+        k = scanf("%d", &t.tm_mday);
     } while (!(t.tm_mday > 0 && t.tm_mday < 32));
     do
     {
         printf("Give year: ");
-        scanf("%d", &t.tm_year);
+        k = scanf("%d", &t.tm_year);
     } while (!(t.tm_year > 0));
 
     t.tm_mon -= 1;
@@ -47,12 +48,16 @@ int main()
     t.tm_yday = 0; /* day in the year, range 0 to 365  */
     t.tm_isdst = -1;
 
+    c1 = clock();
     k = interpolation_search(ocean, mktime(&t), DATA);
+    c2 = clock();
 
     if (k != -1)
         printf("%d/%d/%d\n", ocean[k].date.tm_mon + 1, ocean[k].date.tm_mday, ocean[k].date.tm_year + 1900);
     else
         printf("Record hasn't been found!\n");
+
+    printf("Arxi: %ld, Telos: %ld, Xronos: %f\n", c1, c2, (float)(c2 - c1)/CLOCKS_PER_SEC);
 
     free(ocean);
     free(contents);
