@@ -22,6 +22,7 @@ int main()
     }
 
     bubble_sort(ocean, DATA, TIME);
+    //print_array(ocean, DATA);
 
     do
     {
@@ -39,13 +40,13 @@ int main()
         k = scanf("%d", &t.tm_year);
     } while (!(t.tm_year > 0));
 
-    t.tm_mon -= 1;
+    t.tm_mon  -= 1;
     t.tm_year -= 1900;
-    t.tm_sec = 0;  /* seconds,  range 0 to 59          */
-    t.tm_min = 0;  /* minutes, range 0 to 59           */
-    t.tm_hour = 0; /* hours, range 0 to 23             */
-    t.tm_wday = 0; /* day of the week, range 0 to 6    */
-    t.tm_yday = 0; /* day in the year, range 0 to 365  */
+    t.tm_sec   = 0;  /* seconds,  range 0 to 59          */
+    t.tm_min   = 0;  /* minutes, range 0 to 59           */
+    t.tm_hour  = 0; /* hours, range 0 to 23             */
+    t.tm_wday  = 0; /* day of the week, range 0 to 6    */
+    t.tm_yday  = 0; /* day in the year, range 0 to 365  */
     t.tm_isdst = -1;
 
     c1 = clock();
