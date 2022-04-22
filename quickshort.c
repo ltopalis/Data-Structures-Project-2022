@@ -32,28 +32,27 @@ void swap(float *T_degC_1, float *T_degC_2, char date_1[M], char date_2[M])
 
 void quicksort(ocean values[], int min, int max)
 {
-  int i=(min-1);
+  int i = (min - 1);
   int j;
-  if(values[1].T_degC>values[max].T_degC)
+  if (values[1].T_degC > values[max].T_degC)
     i++;
 
-  else if(values[1].T_degC<=values[max].T_degC)
+  else if (values[1].T_degC <= values[max].T_degC)
     i++;
 
-  for(j=min+1; j<max; j++)
+  for (j = min + 1; j < max; j++)
   {
-    if(values[j].T_degC>values[max].T_degC)
+    if (values[j].T_degC > values[max].T_degC)
       continue;
-    else if(values[j].T_degC<=values[max].T_degC)
+    else if (values[j].T_degC <= values[max].T_degC)
     {
       i++;
       swap(&values[j].T_degC, &values[i].T_degC, values[j].date, values[i].date);
     }
-
   }
 
   quicksort(values, min, i);
-  quicksort(values, i+1, max);
+  quicksort(values, i + 1, max);
 }
 
 void printValues(ocean values[]);
@@ -73,21 +72,21 @@ int main()
 
   int i = 0;
   int k = 0;
-  int half = (int)(N/2);
+  int half = (int)(N / 2);
 
- rewind(fp);
+  rewind(fp);
   i = 0;
   while (fgets(buff, N, fp))
   {
     field_count = 0;
     row_count++;
 
-    char *field = (char *)malloc(sizeof(char)*500);
+    char *field = (char *)malloc(sizeof(char) * 500);
     strcpy(field, strtok(buff, ","));
     if (row_count == 0)
       continue; // oxi
-    while (field_count<8)
-    { 
+    while (field_count < 8)
+    {
       if (field_count == 0)
         strcpy(values[i].date, field);
       else if (field_count == 1)
@@ -116,7 +115,7 @@ int main()
 
   quicksort(values, 1, N);
 
-  for(i=1; i<=N; i++)
+  for (i = 1; i <= N; i++)
   {
     printf("\n%s\t%.3f", values[i].date, values[i].T_degC);
     printf("\n");
