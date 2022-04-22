@@ -18,7 +18,7 @@ void bubble_sort(table_data *pinakas, int n, FIELD t)
 	case TEMPERATURE:
 		for (i = 0; i < n; i++)
 			for (j = n - 1; j >= i + 1; j--)
-				if (pinakas[j].temp < pinakas[j - 1].temp)
+				if (pinakas[j].T_degC < pinakas[j - 1].T_degC)
 					swap(&pinakas[j], &pinakas[j - 1], TABLE_DATA);
 		break;
 	case PHOSPHATE:

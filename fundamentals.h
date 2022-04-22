@@ -32,7 +32,7 @@ enum FIELD
 struct table_data
 {
     struct tm date;
-    double temp;
+    double T_degC;
     double PO4uM;
     double SiO3uM;
     double NO2uM;

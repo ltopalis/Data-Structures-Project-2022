@@ -205,7 +205,7 @@ void print_array(table_data *array, int n)
     {
         strftime(time_str, 11, "%m/%d/%Y", &array[i].date);
         printf("\n%s  ", time_str);
-        printf("%6.3lf  ", array[i].temp);
+        printf("%6.3lf  ", array[i].T_degC);
         printf("%6.3lf  ", array[i].PO4uM);
         printf("%6.3lf  ", array[i].SiO3uM);
         printf("%6.3lf  ", array[i].NO2uM);
