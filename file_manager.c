@@ -1,3 +1,25 @@
+/*
+    The time.h header defines four variable types, two macro and various functions for manipulating date and time.
+
+    ----VARIABLE TYPES----
+
+    struct tm -> This is a structure used to hold the time and date.
+    time_t    -> This is a type suitable for storing the calendar time. (seconds from 01/01/1970)
+    clock_t   -> This is a type suitable for storing the processor time.
+
+    ----FUNCTIONS----
+
+    double difftime(time_t time1, time_t time2) ->  Returns the difference of seconds between time1 and time2 (time1-time2).
+    time_t mktime(struct tm *timeptr)           ->  Converts the structure pointed to by timeptr into a time_t value
+                                                    according to the local time zone.
+    clock_t clock(void)                         ->  Returns the processor clock time used since the beginning of an
+                                                    implementation defined era (normally the beginning of the program).
+
+    ----LINKS----
+
+    https://www.tutorialspoint.com/c_standard_library/time_h.htm
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -7,7 +29,7 @@
 
 int open_file(char *filename, table_data *data_array, char *contents)
 {
-    FILE *fp;
+    FILE *fp = NULL;
     char *pinakas = (char *)malloc(sizeof(char) * LINE_SIZE);
     char *date_str = (char *)malloc(sizeof(char) * (10 + 1));
     if (check_allocation((char *)pinakas) == FALSE)
@@ -19,16 +41,18 @@ int open_file(char *filename, table_data *data_array, char *contents)
     fp = fopen(filename, "r");
     if (!fp)
     {
-        fprintf(stderr, "File could not be open!");
+        fprintf(stderr, "File could not be opened!");
         return FALSE;
     }
-    pinakas = fgets(pinakas, LINE_SIZE, fp);
+    pinakas = fgets(pinakas, LINE_SIZE, fp); // Διαβάζουμε την πρώτη γραμμή του
+                                             // αρχείου με τις επικεφαλίδες κάθε τιμής
     strcpy(contents, pinakas);
 
-    while (fgets(pinakas, LINE_SIZE - 1, fp) != NULL)
+    while (fgets(pinakas, LINE_SIZE - 1, fp) != NULL) // Η while εκτελέιται εώς ότου
+                                                      // φτάσουμε στο τέλος του αρχείου
     {
         strcpy(date_str, strtok(pinakas, ","));
-        data_array[i].temp = atof(strtok(NULL, ","));
+        data_array[i].T_degC = atof(strtok(NULL, ","));
         data_array[i].PO4uM = atof(strtok(NULL, ","));
         data_array[i].SiO3uM = atof(strtok(NULL, ","));
         data_array[i].NO2uM = atof(strtok(NULL, ","));
