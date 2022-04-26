@@ -2,7 +2,15 @@
 
 #define SEARCHING_H
 
+/* 
+    interpolation search (O(log log n)) given the array, the searching date and 
+    the number of elements, the array contains 
+*/
 int interpolation_search(table_data *array, time_t date, int n);
+/*
+    linear search (O(n)) given the array, the searching date, the position where we start 
+    to search and the final position (included it)
+*/
 int Linear_Search(table_data *array, time_t date, int start, int finish);
 
 #endif
