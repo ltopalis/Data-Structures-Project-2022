@@ -14,7 +14,7 @@ typedef struct tag_ocean
   double Salnty;
   double O2ml_L;
 } ocean;
-void printArray(ocean array[], int size);
+void printarray(ocean array[], int size);
 void printValues(ocean values[]);
 void countingsort(ocean array[], int size);
 int main()
@@ -89,8 +89,10 @@ int main()
   return 0;
 }
 
+
 void countingsort(ocean array[], int size){
 ocean final[N];
+
 //Find the largest
 int max=array[0].PO4uM;
 for(int i=0;i<size; i++){
@@ -116,11 +118,23 @@ ocean new_array[N];
     final[(int)new_array[(int)array[i].PO4uM].PO4uM - 1].PO4uM = array[i].PO4uM;
     new_array[(int)array[i].PO4uM].PO4uM--;
   }
-
   // Copy the sorted elements into original array
   for (int i = 0; i < size; i++) {
     array[i].PO4uM = final[i].PO4uM;
   }
+  //For numbers that have the same integer part
+
+  for (int i = 0; i < size; i++){
+  for(int j=0; j<size ;j++){
+        if((int)final[i].PO4uM==(int)final[j].PO4uM){
+
+        ocean decpart[N];
+        double p;
+        for(int k=0; k<N; k++){
+        decpart[k].PO4uM=(modf(final[k].PO4uM,&p))*100;
+        countingsort(decpart,N);}}}}
+
+
 }
 void printarray(ocean array[],int n){
 for (int i = 1; i <= N; i++)
