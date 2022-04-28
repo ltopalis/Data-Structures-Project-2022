@@ -39,19 +39,20 @@ int main()
   }
 */
 
- rewind(fp);
+  rewind(fp);
   i = 0;
+  fgets(buff, 1406, fp);
   while (fgets(buff, 1406, fp))
   {
     field_count = 0;
     row_count++;
 
-    //char *field = strtok(buff, ","); // xwrizei
-    char *field = (char *)malloc(sizeof(char)*500);
+    // char *field = strtok(buff, ","); // xwrizei
+    char *field = (char *)malloc(sizeof(char) * 500);
     strcpy(field, strtok(buff, ","));
     if (row_count == 0)
       continue; // oxi
-    while (field_count<8)
+    while (field_count < 8)
     {
       if (field_count == 0)
         strcpy(values[i].date, field);
@@ -71,82 +72,87 @@ int main()
         values[i].O2ml_L = atof(field);
       field = strtok(NULL, ","); // updates values
       field_count++;
-
     }
 
     i++;
     free(field);
   }
 
-  //printValues(values);
+  // printValues(values);
   int n = sizeof(values) / sizeof(values[0]);
   countingsort(values, n);
   printarray(values, n);
   fclose(fp);
 
-
-
   return 0;
 }
 
+void countingsort(ocean array[], int size)
+{
+  ocean final[N];
 
-void countingsort(ocean array[], int size){
-ocean final[N];
-
-//Find the largest
-int max=array[0].PO4uM;
-for(int i=0;i<size; i++){
-    if(array[i].PO4uM>max) max = array[i].PO4uM;
-}
-ocean new_array[N];
-// Initialize count array with all zeros.
-  for (int i = 0; i <= max; ++i) {
-    new_array[i].PO4uM = 0;
+  // Find the largest
+  int max = array[0].PO4uM * 100;
+  for (int i = 0; i < size; i++)
+  {
+    if (array[i].PO4uM * 100 > max)
+      max = array[i].PO4uM * 100;
   }
-// Store the count of each element
-  for (int i = 0; i < size; i++) {
-    new_array[(int)array[i].PO4uM].PO4uM++;
+  fprintf(stderr, "max %d\n", max);
+  int new_array[max + 1];
+  // Initialize count array with all zeros.
+  for (int i = 0; i <= max + 1; i++)
+  {
+    new_array[i] = 0;
   }
-// Store the cummulative count of each array
-  for (int i = 1; i <= max; i++) {
-    new_array[i].PO4uM += new_array[i - 1].PO4uM;
+  // Store the count of each element
+  for (int i = 0; i < size; i++)
+  {
+    new_array[(int)(array[i].PO4uM * 100)]++;
   }
+  // Store the cummulative count of each array
+  for (int i = 1; i <= max + 1; i++)
+  {
+    new_array[i] += new_array[i - 1];
+  }
+  fprintf(stderr, "OK\n");
 
   // Find the index of each element of the original array in count array, and
   // place the elements in output array
-  for (int i = size - 1; i >= 0; i--) {
-    final[(int)new_array[(int)array[i].PO4uM].PO4uM - 1].PO4uM = array[i].PO4uM;
-    new_array[(int)array[i].PO4uM].PO4uM--;
+  for (int i = size - 1; i >= 0; i--)
+  {
+    strcpy(final[new_array[(int)(array[i].PO4uM * 100)] ].date, array[i].date);
+    final[new_array[(int)(array[i].PO4uM * 100)] ].T_degC = array[i].T_degC;
+    final[new_array[(int)(array[i].PO4uM * 100)] ].PO4uM = array[i].PO4uM;
+    final[new_array[(int)(array[i].PO4uM * 100)] ].NO2uM = array[i].NO2uM;
+    final[new_array[(int)(array[i].PO4uM * 100)] ].NO3uM = array[i].NO3uM;
+    final[new_array[(int)(array[i].PO4uM * 100)] ].O2ml_L = array[i].O2ml_L;
+    final[new_array[(int)(array[i].PO4uM * 100)] ].Salnty = array[i].Salnty;
+    final[new_array[(int)(array[i].PO4uM * 100)] ].SiO3uM = array[i].SiO3uM;
+    new_array[(int)(array[i].PO4uM * 100)]--;
   }
+  fprintf(stderr, "OK2\n");
   // Copy the sorted elements into original array
-  for (int i = 0; i < size; i++) {
+  for (int i = 0; i < size; i++)
+  {
+    strcpy(array[i].date, final[i].date);
+    array[i].T_degC = final[i].T_degC;
     array[i].PO4uM = final[i].PO4uM;
+    array[i].NO2uM = final[i].NO2uM;
+    array[i].NO3uM = final[i].NO3uM;
+    array[i].O2ml_L = final[i].O2ml_L;
+    array[i].Salnty = final[i].Salnty;
+    array[i].SiO3uM = final[i].SiO3uM;
   }
-  //For numbers that have the same integer part
-
-  for (int i = 0; i < size; i++){
-  for(int j=0; j<size ;j++){
-        if((int)final[i].PO4uM==(int)final[j].PO4uM){
-
-        ocean decpart[N];
-        double p;
-        for(int k=0; k<N; k++){
-        decpart[k].PO4uM=(modf(final[k].PO4uM,&p))*100;
-        countingsort(decpart,N);}}}}
-
-
 }
-void printarray(ocean array[],int n){
-for (int i = 1; i <= N; i++)
+void printarray(ocean array[], int n)
+{
+  for (int i = 1; i <= N; i++)
   {
     printf("\n%s\t%.3f", array[i].date, array[i].PO4uM);
     printf("\n");
   }
-
-
-
 }
-
 
 void printValues(ocean values[])
 {
@@ -155,7 +161,7 @@ void printValues(ocean values[])
 
   for (i = 1; i < 1406; i++)
   {
-    printf("%s\t %.2f\t %.2f\t %.2f\t %.2f\t %.2f\t %.2f\t %.2f\t ", values[i].date, values[i].T_degC,  values[i].PO4uM, values[i].SiO3uM, values[i].NO2uM, values[i].NO3uM, values[i].Salnty, values[i].O2ml_L);
-  printf("\n");}
-
+    printf("%s\t %.2f\t %.2f\t %.2f\t %.2f\t %.2f\t %.2f\t %.2f\t ", values[i].date, values[i].T_degC, values[i].PO4uM, values[i].SiO3uM, values[i].NO2uM, values[i].NO3uM, values[i].Salnty, values[i].O2ml_L);
+    printf("\n");
+  }
 }
