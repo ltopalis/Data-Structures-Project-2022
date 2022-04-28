@@ -33,6 +33,7 @@ void equal(ocean *ocean1, ocean *ocean2);
 int binarySearch(ocean arr[], int left, int right, ocean x);
 int interpolationSearch(ocean arr[], int left, int right, ocean x);
 void insertionSort(ocean values[], int n);
+int makeDays(tag_date date);
 
 int main()
 {
@@ -249,18 +250,7 @@ int binarySearch(ocean arr[], int low, int high, ocean x)
 int interpolationSearch(ocean arr[], int low, int high, ocean x)
 {
   int pos;
-  if (low <= high && compareDates(x.date, arr[low].date) >= 0 && compareDates(x.date, arr[high].date) <= 0)
-  {
-    if (x.date.year != arr[low].date.year)
-    {
-      pos = low + abs((high - low) * (x.date.year - arr[low].date.year) / (arr[high].date.year - arr[low].date.year));
-    }
-    else if (x.date.month != arr[low].date.month)
-    {
-      pos = low + abs((high - low) * (x.date.month - arr[low].date.month) / (arr[high].date.month - arr[low].date.month));
-    }
-    else
-      pos = low;
+  pos=low + (high-low)*(makeDays(x.date)-makeDays(arr[low].date))/(makeDays(arr[high].date)-makeDays(arr[low].date));
 
     if (compareDates(arr[pos].date, x.date) == 0)
     {
@@ -276,7 +266,13 @@ int interpolationSearch(ocean arr[], int low, int high, ocean x)
     {
       return interpolationSearch(arr, low, pos - 1, x);
     }
-  }
+  
 
   return -1;
+}
+
+
+int makeDays(tag_date date){
+  int days= (date.year-1)*12*30 + (date.month-1)*30 + date.day;
+  return days;
 }
