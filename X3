@@ -2,15 +2,15 @@
 #include <string.h>
 #include <stdlib.h>
 #define LINESIZE 100
-#define TABLESIZE 1406
-#define DATA 1406
+#define TABLESIZE 1405
+#define DATA 1405
 
 struct tag_date
 {
   int month;
   int day;
   int year;
-} date;
+} ;
 
 typedef struct tag_date tag_date;
 
@@ -25,18 +25,18 @@ typedef struct tag_ocean
   float Salnty;
   float O2ml_L;
 } ocean;
- 
+
 void swap(ocean *ocean1, ocean *ocean2);
 int compareDates(tag_date date1, tag_date date2);
-void insertionSort(ocean values[], int n);
 void printValues(ocean values[]);
 void equal(ocean *ocean1, ocean *ocean2);
 int binarySearch(ocean arr[], int left, int right, ocean x);
 int interpolationSearch(ocean arr[], int left, int right, ocean x);
+void insertionSort(ocean values[], int n);
 
 int main()
 {
-  FILE *fp = fopen("ocean.csv", "r"); //  read mode
+  FILE *fp = fopen("ocean.csv", "r"); 
   if (!fp)
   {
     printf("fuck you");
@@ -48,6 +48,7 @@ int main()
   int i = 0;
   char *field = (char *)malloc(sizeof(char) * LINESIZE);
   char *date_str = (char *)malloc(sizeof(char) * 10 + 1);
+  fgets(field, LINESIZE-1, fp);
   while (fgets(field, LINESIZE - 1, fp) != NULL)
   {
     strcpy(date_str, strtok(field, ","));
@@ -58,8 +59,8 @@ int main()
     values[i].NO3uM = atof(strtok(NULL, ","));
     values[i].Salnty = atof(strtok(NULL, ","));
     values[i].O2ml_L = atof(strtok(NULL, ","));
-    values[i].date.month = atoi(strtok(date_str, "/")); /* month, range 0 to 11             */
-    values[i].date.day = atoi(strtok(NULL, "/"));       /* day of the month, range 1 to 31  */
+    values[i].date.month = atoi(strtok(date_str, "/")); 
+    values[i].date.day = atoi(strtok(NULL, "/"));      
     values[i].date.year = atoi(strtok(NULL, "/"));
 
     i++;
@@ -68,21 +69,18 @@ int main()
   free(field);
   free(date_str);
   fclose(fp);
-  insertionSort(values, DATA);
-  // printValues(values);
-
   ocean x;
   printf("Give month, day and year\n");
   scanf("%d%d%d", &x.date.month, &x.date.day, &x.date.year);
   int n;
-  insertionSort(values, DATA + 1); //
-  // printValues(values);
-  n = interpolationSearch(values, 0, DATA, x);
+  insertionSort(values, DATA);
+  n = interpolationSearch(values, 1, DATA, x);       //BINARY OR INTERPOLATION
   printf("%d\n", n);
+
   if (n != -1)
   {
     int choice;
-    printf("1.Temperature\n2.Phosphate\n3.Both\n(1, 2 or 3)\n");
+    printf("\n1.Temperature\n2.Phosphate\n3.Both\n(1, 2 or 3)\n");
     scanf("%d", &choice);
     if (choice == 1)
     {
@@ -151,24 +149,79 @@ int compareDates(tag_date date1, tag_date date2) // date1-date2.
   }
 }
 
+
 void insertionSort(ocean values[], int n)
 {
-
   int i, j;
   ocean key;
-  for (i = 1; i < n; i++)
-  {
-    key.date = values[i].date;
-    j = i - 1;
-
-    while (j >= 0 && compareDates(values[j].date, key.date) > 0)
-    {
-      values[j + 1] = values[j];
-      j = j - 1;
-    }
-    values[j + 1] = key;
+  for (i=1; i<n; i++){
+    equal(&key, &values[i]);
+    j=i-1;
+  
+  while(j>=0 && compareDates(values[j].date, key.date)>0){
+    equal(&values[j+1], &values[j]);
+    j=j-1;
+    
   }
+  equal(&values[j+1], &key);
+  }
+
 }
+
+void equal(ocean *ocean1, ocean *ocean2)
+{
+  ocean1->date.month = ocean2->date.month;
+  ocean1->date.day = ocean2->date.day;
+  ocean1->date.year = ocean2->date.year;
+  ocean1->T_degC = ocean2->T_degC;
+  ocean1->PO4uM = ocean2->PO4uM;
+  ocean1->SiO3uM = ocean2->SiO3uM;
+  ocean1->NO2uM = ocean2->NO2uM;
+  ocean1->NO3uM = ocean2->NO3uM;
+  ocean1->Salnty = ocean2->Salnty;
+  ocean1->O2ml_L = ocean2->O2ml_L;
+}
+
+
+
+void swap(ocean *ocean1, ocean *ocean2)
+{
+    ocean temp;
+    temp.date.month = ocean1->date.month;
+    temp.date.day = ocean1->date.day;
+    temp.date.year = ocean1->date.year;
+    temp.T_degC = ocean1->T_degC;
+    temp.PO4uM = ocean1->PO4uM;
+    temp.SiO3uM = ocean1->SiO3uM;
+    temp.NO2uM = ocean1->NO2uM;
+    temp.NO3uM = ocean1->NO3uM;
+    temp.Salnty = ocean1->Salnty;
+    temp.O2ml_L = ocean1->O2ml_L;
+
+    ocean1->date.month = ocean2->date.month;
+    ocean1->date.day = ocean2->date.day;
+    ocean1->date.year = ocean2->date.year;
+    ocean1->T_degC = ocean2->T_degC;
+    ocean1->PO4uM = ocean2->PO4uM;
+    ocean1->SiO3uM = ocean2->SiO3uM;
+    ocean1->NO2uM = ocean2->NO2uM;
+    ocean1->NO3uM = ocean2->NO3uM;
+    ocean1->Salnty = ocean2->Salnty;
+    ocean1->O2ml_L = ocean2->O2ml_L;
+
+    ocean2->date.month = temp.date.month;
+    ocean2->date.day = temp.date.day;
+    ocean2->date.year = temp.date.year;
+    ocean2->T_degC = temp.T_degC;
+    ocean2->PO4uM = temp.PO4uM;
+    ocean2->SiO3uM = temp.SiO3uM;
+    ocean2->NO2uM = temp.NO2uM;
+    ocean2->NO3uM = temp.NO3uM;
+    ocean2->Salnty = temp.Salnty;
+    ocean2->O2ml_L = temp.O2ml_L;
+}
+
+
 
 int binarySearch(ocean arr[], int low, int high, ocean x)
 {
