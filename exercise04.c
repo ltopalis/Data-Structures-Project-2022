@@ -50,7 +50,7 @@ int main()
     t.tm_isdst = -1;
 
     c1 = clock();
-    k = interpolation_search(ocean, mktime(&t), DATA);
+    k = binary_interpolation_search(ocean, mktime(&t), DATA);
     c2 = clock();
 
     if (k != -1)

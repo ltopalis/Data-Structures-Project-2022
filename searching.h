@@ -6,7 +6,7 @@
     interpolation search (O(sqrt(n))) given the array, the searching date and 
     the number of elements, the array contains 
 */
-int interpolation_search(table_data *array, time_t date, int n);
+int binary_interpolation_search(table_data *array, time_t date, int n);
 
 /*
     interpolation search optimized in worst case given the array, the searching 

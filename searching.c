@@ -4,7 +4,7 @@
 #include "fundamentals.h"
 #include "searching.h"
 
-int interpolation_search(table_data *array, time_t date, int n)
+int binary_interpolation_search(table_data *array, time_t date, int n)
 {
     int left = 0,
         right = n - 1,
