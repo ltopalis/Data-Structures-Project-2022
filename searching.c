@@ -94,6 +94,63 @@ int binary_interpolation_search(table_data *array, time_t date, int n)
     }
 }
 
+int optimized_binary_interpolation_search(table_data *array, time_t date, int n)
+{
+    int left = 0,
+        right = n - 1,
+        size = right - left + 1,
+        next = 0,
+        prev = 0,
+        i = 0;
+
+    if (difftime(date, mktime(&array[right].date)) > 0) // if the date is anterior of the first date, return -1
+        return -1;
+    if (difftime(date, mktime(&array[left].date)) < 0) // if the date is later of the last date, return -1
+        return -1;
+
+    // Find the possible next position of the date we are searching
+    next = (int)ceil(size * (difftime(date, mktime(&array[left].date)) /
+                             difftime(mktime(&array[right].date), mktime(&array[left].date)))) +
+           1;
+
+    i = 0;
+    size = right - left + 1;
+
+    if (difftime(date, mktime(&array[next].date)) >= 0.0) // the searching date is later than the array[next]
+    {
+        while (difftime(date, mktime(&array[next].date)) > 0.0)
+        {
+            prev = next;
+            i++;
+            next = (int)(next + pow(2.0, (double)i) * sqrt((double)size) - 1);
+            if (next >= n)
+            {
+                next = n - 1;
+                prev = next - sqrt((double)size) + 1;
+            }
+        }
+    }
+    else if (difftime(date, mktime(&array[next].date)) < 0.0) // the searching date is anterior than the array[next]
+    {
+
+        while (difftime(date, mktime(&array[next].date)) < 0.0)
+        {
+            prev = next;
+            i++;
+            next = (int)(next - pow(2.0, (double)i) * sqrt((double)size) + 1);
+            if (next < 0)
+            {
+                next = 0;
+                prev = sqrt((double)size) - 1;
+            }
+            fprintf(stderr, "%d %d\n", next, prev);
+        }
+        swap(&prev, &next, INT);
+    }
+
+    return Linear_Search(array, date, prev, next);
+}
+
 int Linear_Search(table_data *array, time_t date, int start, int finish)
 {
     int i;
