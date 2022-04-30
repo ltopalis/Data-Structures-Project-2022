@@ -79,7 +79,7 @@ int main()
   }
 
   // printValues(values);
-  int n = sizeof(values) / sizeof(values[0]);
+  int n = N;
   countingsort(values, n);
   printarray(values, n);
   fclose(fp);
