@@ -148,7 +148,7 @@ int optimized_binary_interpolation_search(table_data *array, time_t date, int n)
         swap(&prev, &next, INT);
     }
 
-    return Linear_Search(array, date, prev, next);
+    return binary_search(array, date, prev, next);
 }
 
 int Linear_Search(table_data *array, time_t date, int start, int finish)
@@ -159,5 +159,24 @@ int Linear_Search(table_data *array, time_t date, int start, int finish)
         if (difftime(date, mktime(&array[i].date)) == 0.0)
             return i;
 
+    return -1;
+}
+
+int binary_search(table_data *array, time_t date, int start, int finish)
+{
+    int middle = 0;
+
+    if (finish >= start) {
+        middle = start + (finish - start) / 2;
+ 
+        if (difftime(date, mktime(&array[middle].date)) == 0.0)
+            return middle;
+ 
+        if (difftime(date, mktime(&array[middle].date)) < 0.0)
+            return binary_search(array, date, start, middle - 1);
+ 
+        return binary_search(array, date, middle + 1, finish);
+    }
+ 
     return -1;
 }
