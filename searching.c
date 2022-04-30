@@ -15,7 +15,7 @@ int interpolation_search(table_data *array, time_t date, int n)
 
     if (difftime(date, mktime(&array[right].date)) > 0) // if the date is anterior of the first date, return -1
         return -1;
-    if (difftime(date, mktime(&array[left].date)) < 0)  // if the date is later of the last date, return -1
+    if (difftime(date, mktime(&array[left].date)) < 0) // if the date is later of the last date, return -1
         return -1;
 
     // Find the possible next position of the date we are searching
@@ -26,6 +26,7 @@ int interpolation_search(table_data *array, time_t date, int n)
     // The while loop runs until we find the position of the seaching date
     while (difftime(date, mktime(&array[next].date)) != 0.0)
     {
+
         i = 0;
         size = right - left + 1;
 
@@ -33,9 +34,13 @@ int interpolation_search(table_data *array, time_t date, int n)
         if (size < 4)
             return Linear_Search(array, date, left, right);
 
-        if (difftime(date, mktime(&array[next].date)) >= 0.0)   // the searching date is later than the array[next]
+        if (difftime(date, mktime(&array[next].date)) >= 0.0) // the searching date is later than the array[next]
         {
             pseudo_next = (int)(next + i * sqrt((double)size) - 1);
+            if (pseudo_next >= n)
+                pseudo_next = n - 1;
+            else if (pseudo_next < 0)
+                pseudo_next = 0;
             while (difftime(date, mktime(&array[pseudo_next].date)) > 0.0)
             {
                 // farwards jumps till we find the small posible space where the searching date exists.
@@ -52,10 +57,13 @@ int interpolation_search(table_data *array, time_t date, int n)
                 left = right - (int)sqrt((double)size);
             }
         }
-        else if (difftime(date, mktime(&array[next].date)) < 0.0)   // the searching date is anterior than the array[next]
+        else if (difftime(date, mktime(&array[next].date)) < 0.0) // the searching date is anterior than the array[next]
         {
             pseudo_next = (int)(next - i * sqrt((double)size) + 1);
-
+            if (pseudo_next >= n)
+                pseudo_next = n - 1;
+            else if (pseudo_next < 0)
+                pseudo_next = 0;
             while (difftime(date, mktime(&array[pseudo_next].date)) < 0.0)
             {
                 // backward jumps till we find the small posible space where the searching date exists.
@@ -78,7 +86,7 @@ int interpolation_search(table_data *array, time_t date, int n)
             next = n - 1;
     }
 
-    if (difftime(date, mktime(&array[next].date)) == 0.0)   // check if the date we found is which we're searching
+    if (difftime(date, mktime(&array[next].date)) == 0.0) // check if the date we found is which we're searching
         return next;
     else
     {
