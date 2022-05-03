@@ -143,7 +143,6 @@ int optimized_binary_interpolation_search(table_data *array, time_t date, int n)
                 next = 0;
                 prev = sqrt((double)size) - 1;
             }
-            fprintf(stderr, "%d %d\n", next, prev);
         }
         swap(&prev, &next, INT);
     }
