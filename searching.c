@@ -165,17 +165,18 @@ int binary_search(table_data *array, time_t date, int start, int finish)
 {
     int middle = 0;
 
-    if (finish >= start) {
+    if (finish >= start)
+    {
         middle = start + (finish - start) / 2;
- 
+
         if (difftime(date, mktime(&array[middle].date)) == 0.0)
             return middle;
- 
+
         if (difftime(date, mktime(&array[middle].date)) < 0.0)
             return binary_search(array, date, start, middle - 1);
- 
+
         return binary_search(array, date, middle + 1, finish);
     }
- 
+
     return -1;
 }
