@@ -44,7 +44,12 @@ void countingsort(table_data array[], int size)
   //for(int i=0;i<size;i++)
   for (int i = size - 1; i >= 0; i--)
   {
-    strcpy(output[new_array[(int)(array[i].PO4uM * 100)] ].date, array[i].date);
+    output[new_array[(int)(array[i].PO4uM * 100)] ].date.tm_mon = array[i].date.tm_mon;
+    output[new_array[(int)(array[i].PO4uM * 100)] ].date.tm_mday = array[i].date.tm_mday;
+    output[new_array[(int)(array[i].PO4uM * 100)] ].date.tm_year = array[i].date.tm_year;
+    output[new_array[(int)(array[i].PO4uM * 100)] ].date.tm_hour = array[i].date.tm_hour;
+    output[new_array[(int)(array[i].PO4uM * 100)] ].date.tm_min = array[i].date.tm_min;
+    output[new_array[(int)(array[i].PO4uM * 100)] ].date.tm_sec = array[i].date.tm_sec;
     output[new_array[(int)(array[i].PO4uM * 100)]-1].T_degC = array[i].T_degC;
     output[new_array[(int)(array[i].PO4uM * 100)]-1 ].PO4uM = array[i].PO4uM;
     output[new_array[(int)(array[i].PO4uM * 100)]-1 ].NO2uM = array[i].NO2uM;
@@ -58,7 +63,12 @@ void countingsort(table_data array[], int size)
   // Copy the sorted elements into original array
   for (int i = 0; i < size; i++)
   {
-    strcpy(array[i].date, output[i].date);
+    array[i].date.tm_mon = output[i].date.tm_mon;
+    array[i].date.tm_mday = output[i].date.tm_mday;
+    array[i].date.tm_year = output[i].date.tm_year;
+    array[i].date.tm_hour = output[i].date.tm_hour;
+    array[i].date.tm_min = output[i].date.tm_min;
+    array[i].date.tm_sec = output[i].date.tm_sec;
     array[i].T_degC = output[i].T_degC;
     array[i].PO4uM = output[i].PO4uM;
     array[i].NO2uM = output[i].NO2uM;
