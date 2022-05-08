@@ -102,23 +102,27 @@ int optimized_binary_interpolation_search(table_data *array, time_t date, int n)
         next = 0,
         prev = 0,
         i = 0;
+    double diff_l, diff_r, diff_next;
 
-    if (difftime(date, mktime(&array[right].date)) > 0) // if the date is anterior of the first date, return -1
+    diff_r = difftime(date, mktime(&array[right].date));
+    diff_l = difftime(date, mktime(&array[left].date));
+    if (diff_r > 0) // if the date is anterior of the first date, return -1
         return -1;
-    if (difftime(date, mktime(&array[left].date)) < 0) // if the date is later of the last date, return -1
+    if (diff_l < 0) // if the date is later of the last date, return -1
         return -1;
 
     // Find the possible next position of the date we are searching
-    next = (int)ceil(size * (difftime(date, mktime(&array[left].date)) /
+    next = (int)ceil(size * (diff_l /
                              difftime(mktime(&array[right].date), mktime(&array[left].date)))) +
            1;
 
     i = 0;
     size = right - left + 1;
+    diff_next = difftime(date, mktime(&array[next].date));
 
-    if (difftime(date, mktime(&array[next].date)) >= 0.0) // the searching date is later than the array[next]
+    if (diff_next >= 0.0) // the searching date is later than the array[next]
     {
-        while (difftime(date, mktime(&array[next].date)) > 0.0)
+        while (diff_next > 0.0)
         {
             prev = next;
             i++;
@@ -128,12 +132,14 @@ int optimized_binary_interpolation_search(table_data *array, time_t date, int n)
                 next = n - 1;
                 prev = next - sqrt((double)size) + 1;
             }
+            diff_next = difftime(date, mktime(&array[next].date));
         }
+        return binary_search(array, date, prev, next);
     }
-    else if (difftime(date, mktime(&array[next].date)) < 0.0) // the searching date is anterior than the array[next]
+    else if (diff_next < 0.0) // the searching date is anterior than the array[next]
     {
 
-        while (difftime(date, mktime(&array[next].date)) < 0.0)
+        while (diff_next < 0.0)
         {
             prev = next;
             i++;
@@ -143,11 +149,12 @@ int optimized_binary_interpolation_search(table_data *array, time_t date, int n)
                 next = 0;
                 prev = sqrt((double)size) - 1;
             }
+            diff_next = difftime(date, mktime(&array[next].date));
         }
-        swap(&prev, &next, INT);
-    }
-
-    return binary_search(array, date, prev, next);
+        return binary_search(array, date, next, prev);
+    }   
+    
+    return -1;
 }
 
 int Linear_Search(table_data *array, time_t date, int start, int finish)
@@ -161,22 +168,23 @@ int Linear_Search(table_data *array, time_t date, int start, int finish)
     return -1;
 }
 
-int binary_search(table_data *array, time_t date, int start, int finish)
-{
-    int middle = 0;
+int binary_search(table_data *array, time_t date, int start, int finish){
+    int first  = start,
+        last   = finish,
+        middle;
+    double difference = 0.0;
 
-    if (finish >= start)
-    {
-        middle = start + (finish - start) / 2;
+    while(last >= first){
+        middle = first + (last - first) / 2;
+        difference = difftime(date, mktime(&array[middle].date));
 
-        if (difftime(date, mktime(&array[middle].date)) == 0.0)
+        if(difference == 0.0)
             return middle;
-
-        if (difftime(date, mktime(&array[middle].date)) < 0.0)
-            return binary_search(array, date, start, middle - 1);
-
-        return binary_search(array, date, middle + 1, finish);
+        if(difference < 0.0)
+            last = middle - 1;
+        else // difference > 0.0
+            first = middle + 1;
     }
-
+    
     return -1;
 }
