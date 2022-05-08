@@ -64,7 +64,7 @@ int main()
     do
     {
         printf("Choice? ");
-        scanf("%d", &choice);
+        flag = scanf("%d", &choice);
         flag = choice < 1 || choice > 3;
         if (flag)
             fprintf(stderr, "ERROR! Should be between 1 and 3!\n");
