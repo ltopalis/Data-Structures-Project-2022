@@ -1,0 +1,62 @@
+# depslib dependency file v1.0
+1651342575 source:c:\users\my_pc\desktop\part1\fundamentals.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<time.h>
+	"fundamentals.h"
+
+1651593926 c:\users\my_pc\desktop\part1\fundamentals.h
+	<time.h>
+
+1651342437 source:c:\users\my_pc\desktop\part1\file_manager.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<string.h>
+	"fundamentals.h"
+	"file_manager.h"
+
+1651337807 c:\users\my_pc\desktop\part1\file_manager.h
+
+1652021237 source:c:\users\my_pc\desktop\part1\countingsort.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"fundamentals.h"
+	"file_manager.h"
+	"countingsort.h"
+
+1651342129 c:\users\my_pc\desktop\part1\countingsort.h
+
+1651342296 source:c:\users\my_pc\desktop\part1\heapify.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"fundamentals.h"
+	"file_manager.h"
+	"heapify.h"
+
+1651342296 c:\users\my_pc\desktop\part1\heapify.h
+
+1651342338 source:c:\users\my_pc\desktop\part1\heapsort.c
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	"fundamentals.h"
+	"file_manager.h"
+	"heapsort.h"
+
+1651342338 c:\users\my_pc\desktop\part1\heapsort.h
+
+1651594095 source:c:\users\my_pc\desktop\part1\main1.c
+	"fundamentals.h"
+	"file_manager.h"
+	"heapify.h"
+	"heapsort.h"
+
+1652021351 source:c:\users\my_pc\desktop\part1\main2.c
+	"fundamentals.h"
+	"file_manager.h"
+	"countingsort.h"
+
