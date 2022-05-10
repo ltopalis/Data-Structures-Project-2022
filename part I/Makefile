@@ -22,7 +22,7 @@ compile:
 
 # compile Heap sort code
 	@gcc -c -Wall -Wextra -O3 main1.c
-		@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o main1.o -o countingSort.out
+	@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o main1.o -o countingSort.out
 	@rm main1.o
 
 	@echo "Executable file has been created"

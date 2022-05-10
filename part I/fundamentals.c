@@ -221,11 +221,10 @@ void printArray(table_data array[], int n)
 {
     char *time_str = (char *)malloc(sizeof(char) * 11);
 
-
     for (int i = 0; i < n; i++)
     {
         strftime(time_str, 11, "%m/%d/%Y", &array[i].date);
-        printf("%d) %s\t%.3f",(i + 1), time_str, array[i].PO4uM);
+        printf("%d) %s\t%.3f", (i + 1), time_str, array[i].PO4uM);
         printf("\n");
     }
 
