@@ -46,7 +46,8 @@ int open_file(char *filename, table_data *data_array, char *contents)
     }
     pinakas = fgets(pinakas, LINE_SIZE, fp); // Διαβάζουμε την πρώτη γραμμή του
                                              // αρχείου με τις επικεφαλίδες κάθε τιμής
-    strcpy(contents, pinakas);
+    if(contents != NULL)
+        strcpy(contents, pinakas);
 
     while (fgets(pinakas, LINE_SIZE - 1, fp) != NULL) // Η while εκτελέιται εώς ότου
                                                       // φτάσουμε στο τέλος του αρχείου
