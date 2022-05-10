@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "fundamentals.h"
 #include "file_manager.h"
 #include "sort_functions.h"
-#include <time.h>
+
 
 int main()
 {
