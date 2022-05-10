@@ -9,6 +9,8 @@
 int binarySearch(table_data *arr, int low, int high, time_t x)
 {
 
+   
+  
   while (high >= low)
   {
     int mid = low + (high - low) / 2;
@@ -24,13 +26,15 @@ int binarySearch(table_data *arr, int low, int high, time_t x)
     {
       low = mid + 1;
     }
-  }
-
+  
+}
   return -1;
 }
 
 int interpolationSearch(table_data *arr, int low, int high, time_t x)
 {
+  if(low<=high && difftime(mktime(&arr[low].date), x)<0 && difftime(mktime(&arr[high].date), x)>0){
+  
   int pos;
   pos=low + (high-low)*(x-mktime(&arr[low].date))/(mktime(&arr[high].date)-mktime(&arr[low].date));
 
@@ -48,7 +52,7 @@ int interpolationSearch(table_data *arr, int low, int high, time_t x)
     {
       return interpolationSearch(arr, low, pos - 1, x);
     }
+  }
   
-
   return -1;
 }
