@@ -1,5 +1,7 @@
 #ifndef FUNDAMENTALS_H
 
+#include <time.h>
+
 #define FUNDAMENTALS_H
 #define TRUE 1
 #define FALSE 0
