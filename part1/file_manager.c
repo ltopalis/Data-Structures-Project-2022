@@ -1,16 +1,22 @@
 /*
     The time.h header defines four variable types, two macro and various functions for manipulating date and time.
+
     ----VARIABLE TYPES----
+
     struct tm -> This is a structure used to hold the time and date.
     time_t    -> This is a type suitable for storing the calendar time. (seconds from 01/01/1970)
     clock_t   -> This is a type suitable for storing the processor time.
+
     ----FUNCTIONS----
+
     double difftime(time_t time1, time_t time2) ->  Returns the difference of seconds between time1 and time2 (time1-time2).
     time_t mktime(struct tm *timeptr)           ->  Converts the structure pointed to by timeptr into a time_t value
                                                     according to the local time zone.
     clock_t clock(void)                         ->  Returns the processor clock time used since the beginning of an
                                                     implementation defined era (normally the beginning of the program).
+
     ----LINKS----
+
     https://www.tutorialspoint.com/c_standard_library/time_h.htm
 */
 
@@ -38,12 +44,12 @@ int open_file(char *filename, table_data *data_array, char *contents)
         fprintf(stderr, "File could not be opened!");
         return FALSE;
     }
-    pinakas = fgets(pinakas, LINE_SIZE, fp); // Διαβάζουμε την πρώτη γραμμή του
-                                             // αρχείου με τις επικεφαλίδες κάθε τιμής
+    pinakas = fgets(pinakas, LINE_SIZE, fp); // Ξ”ΞΉΞ±Ξ²Ξ¬Ξ¶ΞΏΟ…ΞΌΞµ Ο„Ξ·Ξ½ Ο€ΟΟΟ„Ξ· Ξ³ΟΞ±ΞΌΞΌΞ® Ο„ΞΏΟ…
+                                             // Ξ±ΟΟ‡ΞµΞ―ΞΏΟ… ΞΌΞµ Ο„ΞΉΟ‚ ΞµΟ€ΞΉΞΊΞµΟ†Ξ±Ξ»Ξ―Ξ΄ΞµΟ‚ ΞΊΞ¬ΞΈΞµ Ο„ΞΉΞΌΞ®Ο‚
     strcpy(contents, pinakas);
 
-    while (fgets(pinakas, LINE_SIZE - 1, fp) != NULL) // Η while εκτελέιται εώς ότου
-                                                      // φτάσουμε στο τέλος του αρχείου
+    while (fgets(pinakas, LINE_SIZE - 1, fp) != NULL) // Ξ— while ΞµΞΊΟ„ΞµΞ»Ξ­ΞΉΟ„Ξ±ΞΉ ΞµΟΟ‚ ΟΟ„ΞΏΟ…
+                                                      // Ο†Ο„Ξ¬ΟƒΞΏΟ…ΞΌΞµ ΟƒΟ„ΞΏ Ο„Ξ­Ξ»ΞΏΟ‚ Ο„ΞΏΟ… Ξ±ΟΟ‡ΞµΞ―ΞΏΟ…
     {
         strcpy(date_str, strtok(pinakas, ","));
         data_array[i].T_degC = atof(strtok(NULL, ","));

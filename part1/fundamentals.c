@@ -216,10 +216,18 @@ void print_array(table_data *array, int n)
     printf("\n");
     free(time_str);
 }
-void printArray(table_data array[],int n){
-for (int i = 1; i <= n; i++)
-  {
-    printf("\n%s\t%.3f", array[i].date, array[i].PO4uM);
-    printf("\n");
-  }
+
+void printArray(table_data array[], int n)
+{
+    char *time_str = (char *)malloc(sizeof(char) * 11);
+
+
+    for (int i = 0; i < n; i++)
+    {
+        strftime(time_str, 11, "%m/%d/%Y", &array[i].date);
+        printf("%d) %s\t%.3f",(i + 1), time_str, array[i].PO4uM);
+        printf("\n");
+    }
+
+    free(time_str);
 }

@@ -4,7 +4,7 @@
 #include "fundamentals.h"
 #include "file_manager.h"
 #include "heapify.h"
-#define N 1405
+
 
 
 void Heapify(table_data array[],int node,int heap_size){
