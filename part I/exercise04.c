@@ -107,5 +107,6 @@ int main()
 
     free(ocean);
     free(contents);
-    return 0;
+    
+    exit(0);
 }
