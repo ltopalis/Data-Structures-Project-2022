@@ -5,7 +5,6 @@
 #include "file_manager.h"
 #include "sort_functions.h"
 
-
 int main()
 {
     table_data values[1405];

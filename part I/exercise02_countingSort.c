@@ -5,7 +5,6 @@
 #include "file_manager.h"
 #include "sort_functions.h"
 
-
 int main()
 {
     table_data values[1405];
@@ -18,7 +17,7 @@ int main()
     c2 = clock();
     printArray(values, k);
     printf("====================\n");
-        printf("Countingsort          %f sec\n", (float)(c2 - c1) / CLOCKS_PER_SEC);
+    printf("Countingsort          %f sec\n", (float)(c2 - c1) / CLOCKS_PER_SEC);
     free(contents);
     exit(0);
 }
