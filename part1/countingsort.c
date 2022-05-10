@@ -4,7 +4,6 @@
 #include "fundamentals.h"
 #include "file_manager.h"
 #include "countingsort.h"
-#define N 1405
 #include <time.h>
 
 
