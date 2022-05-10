@@ -50,5 +50,6 @@ typedef struct table_data table_data;
 int swap(void *a, void *b, DATA_TYPE t);
 int check_allocation(void *p);
 void print_array(table_data *array, int n);
+void printArray(table_data array[], int n);
 
 #endif
