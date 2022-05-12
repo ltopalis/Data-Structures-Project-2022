@@ -10,6 +10,11 @@ compile:
 	@gcc -c -Wall -Wextra -O3 sort_functions.c
 	@gcc -c -Wall -Wextra -O3 searching.c -lm
 
+# compile bubble and interpolation sort code
+	@gcc -c -Wall -Wextra -O3 exercise03.c
+	@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o searching.o exercise03.o -o interpolation.out -lm
+	@rm exercise03.o
+
 # compile counting sort code
 	@gcc -c -Wall -Wextra -O3 exercise02_countingSort.c
 	@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o exercise02_countingSort.o -o countingSort.out

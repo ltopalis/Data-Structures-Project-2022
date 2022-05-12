@@ -3,7 +3,7 @@
 #include <time.h>
 #include "fundamentals.h"
 #include "file_manager.h"
-#include "exe3.h"
+#include "searching.h"
 #include "sort_functions.h"
 
 int main()

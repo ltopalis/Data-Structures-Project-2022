@@ -2,6 +2,10 @@
 
 #define SEARCHING_H
 
+int binarySearch(table_data *arr, int low, int high, time_t x);
+
+int interpolationSearch(table_data *arr, int low, int high, time_t x);
+
 /*
     interpolation search (O(sqrt(n))) given the array, the searching date and
     the number of elements, the array contains
