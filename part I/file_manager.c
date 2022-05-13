@@ -41,12 +41,12 @@ int open_file(char *filename, table_data *data_array, char *contents)
     fp = fopen(filename, "r");
     if (!fp)
     {
-        fprintf(stderr, "File could not be opened!");
+        fprintf(stderr, "Error opening file!");
         return FALSE;
     }
     pinakas = fgets(pinakas, LINE_SIZE, fp); // Διαβάζουμε την πρώτη γραμμή του
                                              // αρχείου με τις επικεφαλίδες κάθε τιμής
-    if(contents != NULL)
+    if (contents != NULL)
         strcpy(contents, pinakas);
 
     while (fgets(pinakas, LINE_SIZE - 1, fp) != NULL) // Η while εκτελέιται εώς ότου
