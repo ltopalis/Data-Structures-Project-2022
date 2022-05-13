@@ -10,6 +10,16 @@ compile:
 	@gcc -c -Wall -Wextra -O3 sort_functions.c
 	@gcc -c -Wall -Wextra -O3 searching.c -lm
 
+# compile insertion sort code
+	@gcc -c -Wall -Wextra -O3 exercise01_insertion_sort.c
+	@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o exercise01_insertion_sort.o -o insertionSort.out
+	@rm exercise01_insertion_sort.o
+
+# compile quick sort code
+	@gcc -c -Wall -Wextra -O3 exercise01_quicksort.c
+	@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o exercise01_quicksort.o -o quickSort.out
+	@rm exercise01_quicksort.o
+
 # compile bubble and interpolation sort code
 	@gcc -c -Wall -Wextra -O3 exercise03.c
 	@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o searching.o exercise03.o -o interpolation.out -lm
