@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "fundamentals.h"
 #include "file_manager.h"
-#include "sort_functions.h"
+#include "fundamentals.h"
+#include "quicksort.h"
 
 int main()
 {
@@ -16,21 +16,19 @@ int main()
 
 	clock_t begin = clock();
 
-	quicksort(values, 0, DATA);
+	quicksort(values, 0, DATA-1);
 
 	clock_t end = clock();
+	
+	for(i=0; i<DATA; i++)
+  	{
+    	printf("%d) %2.d/%2.d/%d\t%.3f", i, values[i].date.tm_mday, values[i].date.tm_mon+1, values[i].date.tm_year+1900, values[i].T_degC);
+    	printf("\n");
+  	}
 
-	for (i = 1; i <= DATA; i++)
-	{
-		printf("%d) %2.d/%2.d/%d\t%.3f", i, values[i].date.tm_mday, values[i].date.tm_mon + 1, values[i].date.tm_year + 1900, values[i].T_degC);
-		printf("\n");
-	}
+  	time_spent = (double)(end-begin)/CLOCKS_PER_SEC;
 
-	clock_t end = clock();
+  	printf("\nThe execution time of quicksort is: %f\n", time_spent);
 
-	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
-
-	printf("\nThe execution time of quicksort is: %f\n", time_spent);
-
-	exit(0);
+  	exit(0);
 }
