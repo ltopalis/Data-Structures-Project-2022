@@ -7,14 +7,14 @@ void insertion_sort(table_data *data_array, int max)
 	int i;
 	int k;
 
-	for(i=1; i<max; i++)
+	for(i=0; i<max-1; i++)
   	{
     	if(data_array[i].T_degC<=data_array[i+1].T_degC)
       		continue;
     	else if(data_array[i].T_degC>data_array[i+1].T_degC)
       		swap(&data_array[i], &data_array[i+1], TABLE_DATA);
       
-      	if(i==1)
+      	if(i==0)
         	continue;
       	else
       	{
