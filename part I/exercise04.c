@@ -72,38 +72,35 @@ int main()
     } while (flag);
     printf("====================\n");
 
-    if (k == m)
+    if (k == m && k == -1)
+        printf("There're no records!\n");
+    else if (difftime(mktime(&ocean[k].date), mktime(&ocean[m].date) == 0.0))
     {
-        if (k != -1)
+        switch (choice)
         {
-            switch (choice)
-            {
-            case 1:
-                printf("%d/%d/%d\tTemperature: %.3f\n", ocean[k].date.tm_mon + 1,
-                       ocean[k].date.tm_mday, ocean[k].date.tm_year + 1900, ocean[k].T_degC);
-                break;
-            case 2:
-                printf("%d/%d/%d\tPhospate: %.3f\n", ocean[k].date.tm_mon + 1,
-                       ocean[k].date.tm_mday, ocean[k].date.tm_year + 1900, ocean[k].PO4uM);
-                break;
-            case 3:
-                printf("%d/%d/%d\tTemperature:%.3f\tPhospahte: %.3f\n", ocean[k].date.tm_mon + 1,
-                       ocean[k].date.tm_mday, ocean[k].date.tm_year + 1900, ocean[k].T_degC, ocean[k].PO4uM);
-                break;
-            default:
-                fprintf(stderr, "An unexpected error occured! Try again, please!\n");
-                break;
-            }
+        case 1:
+            printf("%d/%d/%d\tTemperature: %.3f\n", ocean[k].date.tm_mon + 1,
+                   ocean[k].date.tm_mday, ocean[k].date.tm_year + 1900, ocean[k].T_degC);
+            break;
+        case 2:
+            printf("%d/%d/%d\tPhospate: %.3f\n", ocean[k].date.tm_mon + 1,
+                   ocean[k].date.tm_mday, ocean[k].date.tm_year + 1900, ocean[k].PO4uM);
+            break;
+        case 3:
+            printf("%d/%d/%d\tTemperature:%.3f\tPhospahte: %.3f\n", ocean[k].date.tm_mon + 1,
+                   ocean[k].date.tm_mday, ocean[k].date.tm_year + 1900, ocean[k].T_degC, ocean[k].PO4uM);
+            break;
+        default:
+            fprintf(stderr, "An unexpected error occured! Try again, please!\n");
+            break;
         }
-        else
-            printf("There're no records!\n");
-
-        printf("====================\n");
-        printf("Binary Interpolation Search           %f sec\n", (float)(c2 - c1) / CLOCKS_PER_SEC);
-        printf("Optimized Binary Interpolation Search %f sec\n", (float)(c4 - c3) / CLOCKS_PER_SEC);
     }
     else
         fprintf(stderr, "An unexpected error occured! Try again, please!\n");
+
+    printf("====================\n");
+    printf("Binary Interpolation Search           %f sec\n", (float)(c2 - c1) / CLOCKS_PER_SEC);
+    printf("Optimized Binary Interpolation Search %f sec\n", (float)(c4 - c3) / CLOCKS_PER_SEC);
 
     free(ocean);
     free(contents);
