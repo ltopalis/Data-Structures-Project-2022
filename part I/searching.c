@@ -174,8 +174,7 @@ int optimized_binary_interpolation_search(table_data *array, time_t date, int n)
         while (diff_next > 0.0)
         {
             prev = next;
-            i++;
-            next = (int)(next + pow(2.0, (double)i) * sqrt((double)size) - 1);
+            next = (int)(next + pow(2.0, (double)i++) * sqrt((double)size) - 1);
             if (next >= n)
             {
                 next = n - 1;
@@ -191,8 +190,8 @@ int optimized_binary_interpolation_search(table_data *array, time_t date, int n)
         while (diff_next < 0.0)
         {
             prev = next;
-            i++;
-            next = (int)(next - pow(2.0, (double)i) * sqrt((double)size) + 1);
+
+            next = (int)(next - pow(2.0, (double)i++) * sqrt((double)size) + 1);
             if (next < 0)
             {
                 next = 0;

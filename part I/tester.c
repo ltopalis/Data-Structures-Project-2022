@@ -6,7 +6,7 @@
 #include "searching.h"
 #include "sort_functions.h"
 
-#define UINT_MAX 0xfffff
+#define UINT_MAX 0xffffe
 #define TRUE 1
 #define FALSE 0
 
@@ -29,10 +29,15 @@ int main()
            t_BIS = 0.0,
            t_oBIS = 0.0;
 
-    open_file("ocean.csv", values, contents);
+    fprintf(stderr, "\033[1;31m");
 
-    bubble_sort(values, DATA, TIME);
+    open_file("ocean.csv", values, contents);
+    
+    printf("\033[0;36m");
+    printf("Estimated time: 2-5 minutes\n");
+    printf("sorting...\n");
     printf("\033[0;35m");
+    bubble_sort(values, DATA, TIME);
     printf("--------------START--------------\n");
     printf("START      FINISH          STATUS\n");
     printf("\033[0m");
@@ -80,7 +85,6 @@ int main()
                 if ((difftime(mktime(&values[m].date), mktime(&values[k].date)) == 0.0 &&
                      difftime(mktime(&values[l].date), mktime(&values[k].date)) == 0.0))
                 {
-                    fprintf(stderr, "\033[1;31m");
                     fprintf(stderr, "DATE: %d/%d/%d\n", timeinfo.tm_mon + 1, timeinfo.tm_mday, timeinfo.tm_year + 1900);
                     fprintf(stderr, "====================================\n");
                     fprintf(stderr, "ALGORITHM            POSITION\n");
@@ -89,7 +93,8 @@ int main()
                     fprintf(stderr, "interpolation search: %d\n", m);
                     fprintf(stderr, "BIS                 : %d\n", k);
                     fprintf(stderr, "optimized BIS       : %d\n", l);
-                    fprintf(stderr, "\033[0m");
+                    fprintf(stderr, "\n\n");
+
                     flag = FALSE;
                 }
             }
@@ -98,7 +103,7 @@ int main()
                 if ((difftime(mktime(&values[n].date), mktime(&values[k].date)) == 0.0 &&
                      difftime(mktime(&values[l].date), mktime(&values[k].date)) == 0.0))
                 {
-                    fprintf(stderr, "\033[1;31m");
+
                     fprintf(stderr, "DATE: %d/%d/%d\n", timeinfo.tm_mon + 1, timeinfo.tm_mday, timeinfo.tm_year + 1900);
                     fprintf(stderr, "====================================\n");
                     fprintf(stderr, "ALGORITHM            POSITION\n");
@@ -107,7 +112,8 @@ int main()
                     fprintf(stderr, "interpolation search: %d\n", m);
                     fprintf(stderr, "BIS                 : %d\n", k);
                     fprintf(stderr, "optimized BIS       : %d\n", l);
-                    fprintf(stderr, "\033[0m");
+                    fprintf(stderr, "\n\n");
+
                     flag = FALSE;
                 }
             }
@@ -116,7 +122,7 @@ int main()
                 if ((difftime(mktime(&values[m].date), mktime(&values[n].date)) == 0.0 &&
                      difftime(mktime(&values[l].date), mktime(&values[n].date)) == 0.0))
                 {
-                    fprintf(stderr, "\033[1;31m");
+
                     fprintf(stderr, "DATE: %d/%d/%d\n", timeinfo.tm_mon + 1, timeinfo.tm_mday, timeinfo.tm_year + 1900);
                     fprintf(stderr, "====================================\n");
                     fprintf(stderr, "ALGORITHM            POSITION\n");
@@ -125,7 +131,8 @@ int main()
                     fprintf(stderr, "interpolation search: %d\n", m);
                     fprintf(stderr, "BIS                 : %d\n", k);
                     fprintf(stderr, "optimized BIS       : %d\n", l);
-                    fprintf(stderr, "\033[0m");
+                    fprintf(stderr, "\n\n");
+
                     flag = FALSE;
                 }
             }
@@ -134,7 +141,7 @@ int main()
                 if ((difftime(mktime(&values[m].date), mktime(&values[k].date)) == 0.0 &&
                      difftime(mktime(&values[n].date), mktime(&values[k].date)) == 0.0))
                 {
-                    fprintf(stderr, "\033[1;31m");
+
                     fprintf(stderr, "DATE: %d/%d/%d\n", timeinfo.tm_mon + 1, timeinfo.tm_mday, timeinfo.tm_year + 1900);
                     fprintf(stderr, "====================================\n");
                     fprintf(stderr, "ALGORITHM            POSITION\n");
@@ -143,7 +150,8 @@ int main()
                     fprintf(stderr, "interpolation search: %d\n", m);
                     fprintf(stderr, "BIS                 : %d\n", k);
                     fprintf(stderr, "optimized BIS       : %d\n\n", l);
-                    fprintf(stderr, "\033[0m");
+                    fprintf(stderr, "\n\n");
+
                     flag = FALSE;
                 }
             }
@@ -168,24 +176,36 @@ int main()
             oBIS_fail += 1;
         else
             oBIS_suc += 1;
-
-        fprintf(stderr, "\n\n");
     }
     printf("\033[0;35m");
     printf("--------------FINISH-------------\n");
     printf("\033[0m");
 
-    printf("\033[1;32m");
     if (flag)
+    {
+        printf("\033[1;32m");
         printf("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PASS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
-    printf("==================================================================\n");
-    printf("ALGORITHM                 TIME          SUCCESS         FAIL      \n");
-    printf("==================================================================\n");
-    printf("binary search       : %.10lf\t%-10d\t%-10d\n", t_bin / (bin_suc + bin_fail), bin_suc, bin_fail);
-    printf("interpolation search: %.10lf\t%-10d\t%-10d\n", t_inter / (inter_suc + inter_fail), inter_suc, inter_fail);
-    printf("BIS                 : %.10lf\t%-10d\t%-10d\n", t_BIS / (BIS_suc + BIS_fail), BIS_suc, BIS_fail);
-    printf("optimized BIS       : %.10lf\t%-10d\t%-10d\n", t_oBIS / (oBIS_suc + oBIS_fail), oBIS_suc, oBIS_fail);
+        printf("\033[0m");
+    }
+    else
+    {
+        printf("\033[1;31m");
+        printf("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~FAIL~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+        printf("\033[0m");
+    }
+    printf("\033[1;32m");
+    printf("Amount of tests %u\n", (bin_fail + bin_suc));
+    printf("==============================================================================\n");
+    printf("ALGORITHM                 TIME          SUCCESS         FAIL      SUCCESS RATE\n");
+    printf("==============================================================================\n");
+    printf("binary search       : %.10lf\t%-10d\t%-10d  %f\n", t_bin / (bin_suc + bin_fail), bin_suc, bin_fail, bin_suc / (float)(bin_suc + bin_fail));
+    printf("interpolation search: %.10lf\t%-10d\t%-10d  %f\n", t_inter / (inter_suc + inter_fail), inter_suc, inter_fail,inter_suc / (float)(inter_suc + inter_fail));
+    printf("BIS                 : %.10lf\t%-10d\t%-10d  %f\n", t_BIS / (BIS_suc + BIS_fail), BIS_suc, BIS_fail, BIS_suc / (float)(BIS_suc + BIS_fail));
+    printf("optimized BIS       : %.10lf\t%-10d\t%-10d  %f\n", t_oBIS / (oBIS_suc + oBIS_fail), oBIS_suc, oBIS_fail, oBIS_suc / (float)(oBIS_suc + oBIS_fail));
     printf("\033[0m");
-
-    return 0;
+    
+    fprintf(stderr, "\033[0m");
+    
+    system("pause");
+    exit(0);
 }
