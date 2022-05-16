@@ -144,7 +144,7 @@ void insertion_sort(table_data *data_array, int max)
 	int i;
 	int k;
 
-	for(i=1; i<max; i++)
+	for(i=1; i<max-1; i++)
   	{
     	if(data_array[i].T_degC<=data_array[i+1].T_degC)
       		continue;
