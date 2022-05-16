@@ -35,9 +35,11 @@ void printAVL(Node *root);
 int getBalance(Node *N);
 int max(int a, int b);
 int check_allocation(void *p);
+double search(Node *root, time_t date);
 
 int main()
 {
+    struct tm date;
     FILE *fp = NULL;
     Node *root = NULL;
     table_data temp;
@@ -71,12 +73,18 @@ int main()
         temp.date.tm_yday = 0;                              /* day in the year, range 0 to 365  */
         temp.date.tm_isdst = -1;                            /* daylight saving time             */
         root = insert(root, temp);
-        fprintf(stderr, "%s\n", pinakas);
     }
 
-    printf("tree");
-    printAVL(root);
+    // printAVL(root);
 
+    printf("Give us a date");
+    scanf("%d", &date.tm_mon);
+    scanf("%d", &date.tm_mday);
+    scanf("%d", &date.tm_year);
+    date.tm_hour = 0;
+    date.tm_min = 0;
+    date.tm_sec = 0;
+    printf("%lf", search(root, mktime(&date)));
     fclose(fp);
     free(pinakas);
     free(date_str);
@@ -157,7 +165,7 @@ Node *insert(Node *node, table_data key)
         node->left = insert(node->left, key);
     else if (difftime(mktime(&key.date), mktime(&node->key.date)) > 0)
         node->right = insert(node->right, key);
-    else // dgaf
+    else
         return node;
 
     node->height = height(node);
@@ -211,4 +219,27 @@ int check_allocation(void *p)
     }
 
     return TRUE;
+}
+
+double search(Node *root, time_t date)
+{
+    double val;
+    double diff;
+
+    if (root == NULL)
+        return -1.0;
+
+    diff = difftime(date, mktime(&root->key.date));
+    if (diff = 0.0) // found
+        return root->key.T_degC;
+    else if (diff > 0.0) // metagenesterh
+    {
+        val = search(root->right, date);
+        return val;
+    }
+    else if (diff < 0.0) // mikroterh
+    {
+        val = search(root->left, date);
+        return val;
+    }
 }
