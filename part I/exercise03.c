@@ -41,6 +41,14 @@ int main()
   clock_t end2 = clock();
   time2 = (double)(end2 - start2) / CLOCKS_PER_SEC;
 
+  if (n != m)
+  {
+    fprintf(stderr, "An unexpected error occured! Try again, please!\n");
+    printf("\nBinarySearch: %.10f", time1);
+    printf("\nInterpolationSearch: %.10f\n", time2);
+    exit(0);
+  }
+
   // printf("%d\n", n);
   if (n != -1)
   {
