@@ -238,3 +238,34 @@ int binary_search(table_data *array, time_t date, int start, int finish)
 
     return -1;
 }
+
+int interpolation_Search(table_data *arr, int low, int high, time_t x)
+{
+    
+ 
+   
+    while ((difftime(mktime(&arr[high].date), mktime(&arr[low].date)) >= 0) && (difftime(x, mktime(&arr[low].date)) >= 0) && (difftime(x, mktime(&arr[low].date)) <= 0) )
+    {
+        if (low == high)
+        {
+            if ((difftime(x, mktime(&arr[low].date)) == 0)) return low; 
+            return -1;
+        }
+        
+        int pos = low + ((double)(high - low) /
+            (difftime(mktime(&arr[high].date), mktime(&arr[low].date))) * (difftime(x, mktime(&arr[low].date))));
+ 
+        
+        if (difftime(mktime(&arr[pos].date), x) == 0) // (difftime(mktime(&arr[pos].date), x) == 0)
+            return pos;
+ 
+        
+        if (difftime(mktime(&arr[pos].date), x) < 0)
+            low = pos + 1;
+ 
+        
+        else
+            high = pos - 1;
+    }
+    return -1;
+}
