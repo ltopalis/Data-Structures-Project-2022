@@ -26,32 +26,37 @@ int binarySearch(table_data *arr, int low, int high, time_t x)
     return -1;
 }
 
-int interpolationSearch(table_data *arr, int low, int high, time_t x)
+int interpolation_Search(table_data *arr, int low, int high, time_t x)
 {
-    if (low <= high && difftime(mktime(&arr[low].date), x) < 0 && difftime(mktime(&arr[high].date), x) > 0)
+    
+ 
+   
+    while ((difftime(mktime(&arr[high].date), mktime(&arr[low].date)) >= 0) && (difftime(x, mktime(&arr[low].date)) >= 0) && (difftime(x, mktime(&arr[high].date)) <= 0) )
     {
-
-        int pos;
-        pos = low + (high - low) * (x - mktime(&arr[low].date)) / (mktime(&arr[high].date) - mktime(&arr[low].date));
-
-        if (difftime(mktime(&arr[pos].date), x) == 0)
+        if (low == high)
         {
+            if ((difftime(x, mktime(&arr[low].date)) == 0)) return low; 
+            return -1;
+        }
+        
+        int pos = low + ((double)(high - low) /
+            (difftime(mktime(&arr[high].date), mktime(&arr[low].date))) * (difftime(x, mktime(&arr[low].date))));
+ 
+        
+        if (difftime(mktime(&arr[pos].date), x) == 0) // (difftime(mktime(&arr[pos].date), x) == 0)
             return pos;
-        }
-
+ 
+        
         if (difftime(mktime(&arr[pos].date), x) < 0)
-        {
-            return interpolationSearch(arr, pos + 1, high, x);
-        }
-
-        if (difftime(mktime(&arr[pos].date), x) > 0)
-        {
-            return interpolationSearch(arr, low, pos - 1, x);
-        }
+            low = pos + 1;
+ 
+        
+        else
+            high = pos - 1;
     }
-
     return -1;
 }
+
 
 int binary_interpolation_search(table_data *array, time_t date, int n)
 {
@@ -239,33 +244,4 @@ int binary_search(table_data *array, time_t date, int start, int finish)
     return -1;
 }
 
-int interpolation_Search(table_data *arr, int low, int high, time_t x)
-{
-    
- 
-   
-    while ((difftime(mktime(&arr[high].date), mktime(&arr[low].date)) >= 0) && (difftime(x, mktime(&arr[low].date)) >= 0) && (difftime(x, mktime(&arr[low].date)) <= 0) )
-    {
-        if (low == high)
-        {
-            if ((difftime(x, mktime(&arr[low].date)) == 0)) return low; 
-            return -1;
-        }
-        
-        int pos = low + ((double)(high - low) /
-            (difftime(mktime(&arr[high].date), mktime(&arr[low].date))) * (difftime(x, mktime(&arr[low].date))));
- 
-        
-        if (difftime(mktime(&arr[pos].date), x) == 0) // (difftime(mktime(&arr[pos].date), x) == 0)
-            return pos;
- 
-        
-        if (difftime(mktime(&arr[pos].date), x) < 0)
-            low = pos + 1;
- 
-        
-        else
-            high = pos - 1;
-    }
-    return -1;
-}
+
