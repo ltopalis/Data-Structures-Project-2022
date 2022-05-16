@@ -7,6 +7,7 @@
 
 int main()
 {
+	//hello
 	double time_spent;
 	table_data values[DATA];
 	char first_lines_content[LINE_SIZE];
