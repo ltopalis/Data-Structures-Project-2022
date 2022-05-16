@@ -242,7 +242,7 @@ int binary_search(table_data *array, time_t date, int start, int finish)
 int interpolation_Search(table_data *arr, int low, int high, time_t x)
 {
 
-    while ((difftime(mktime(&arr[high].date), mktime(&arr[low].date)) >= 0) && (difftime(x, mktime(&arr[low].date)) >= 0) && (difftime(x, mktime(&arr[low].date)) <= 0))
+    while ((difftime(mktime(&arr[high].date), mktime(&arr[low].date)) >= 0) && (difftime(x, mktime(&arr[low].date)) >= 0) && (difftime(x, mktime(&arr[high].date)) <= 0))
     {
         if (low == high)
         {
