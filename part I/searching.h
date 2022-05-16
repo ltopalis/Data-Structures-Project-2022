@@ -4,7 +4,7 @@
 
 int binarySearch(table_data *arr, int low, int high, time_t x);
 
-int interpolation_Search(table_data *arr, int low, int high, time_t x)
+int interpolation_Search(table_data *arr, int low, int high, time_t x);
 
 /*
     binary interpolation search (O(sqrt(n))) given the array, the searching date and
