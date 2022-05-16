@@ -32,7 +32,7 @@ int main()
     fprintf(stderr, "\033[1;31m");
 
     open_file("ocean.csv", values, contents);
-    
+
     printf("\033[0;36m");
     printf("Estimated time: 2-5 minutes\n");
     printf("sorting...\n");
@@ -64,7 +64,7 @@ int main()
         t_bin += ((float)(c2 - c1)) / CLOCKS_PER_SEC;
 
         clock_t c3 = clock();
-        m = interpolationSearch(values, 0, DATA - 1, mktime(&timeinfo));
+        m = interpolation_Search(values, 0, DATA - 1, mktime(&timeinfo));
         clock_t c4 = clock();
         t_inter += ((float)(c4 - c3)) / CLOCKS_PER_SEC;
 
@@ -184,7 +184,7 @@ int main()
     if (flag)
     {
         printf("\033[1;32m");
-        printf("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PASS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
+        printf("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~PASS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n");
         printf("\033[0m");
     }
     else
@@ -199,13 +199,12 @@ int main()
     printf("ALGORITHM                 TIME          SUCCESS         FAIL      SUCCESS RATE\n");
     printf("==============================================================================\n");
     printf("binary search       : %.10lf\t%-10d\t%-10d  %f\n", t_bin / (bin_suc + bin_fail), bin_suc, bin_fail, bin_suc / (float)(bin_suc + bin_fail));
-    printf("interpolation search: %.10lf\t%-10d\t%-10d  %f\n", t_inter / (inter_suc + inter_fail), inter_suc, inter_fail,inter_suc / (float)(inter_suc + inter_fail));
+    printf("interpolation search: %.10lf\t%-10d\t%-10d  %f\n", t_inter / (inter_suc + inter_fail), inter_suc, inter_fail, inter_suc / (float)(inter_suc + inter_fail));
     printf("BIS                 : %.10lf\t%-10d\t%-10d  %f\n", t_BIS / (BIS_suc + BIS_fail), BIS_suc, BIS_fail, BIS_suc / (float)(BIS_suc + BIS_fail));
     printf("optimized BIS       : %.10lf\t%-10d\t%-10d  %f\n", t_oBIS / (oBIS_suc + oBIS_fail), oBIS_suc, oBIS_fail, oBIS_suc / (float)(oBIS_suc + oBIS_fail));
     printf("\033[0m");
-    
+
     fprintf(stderr, "\033[0m");
-    
-    system("pause");
+
     exit(0);
 }

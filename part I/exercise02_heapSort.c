@@ -15,7 +15,7 @@ int main()
     c3 = clock();
     HeapSort(values, k);
     c4 = clock();
-    printArray(values, k);
+    print_array(values, k);
     printf("====================\n");
     printf("Heapsort %f sec\n", (float)(c4 - c3) / CLOCKS_PER_SEC);
 

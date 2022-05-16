@@ -15,7 +15,7 @@ int main()
     c1 = clock();
     countingsort(values, k);
     c2 = clock();
-    printArray(values, k);
+    print_array(values, k);
     printf("====================\n");
     printf("Countingsort          %f sec\n", (float)(c2 - c1) / CLOCKS_PER_SEC);
     free(contents);

@@ -66,6 +66,6 @@ int main()
     printf("date not found.\n");
   }
   printf("\nBinarySearch: %.10f", time1);
-  printf("\nInterpolationSearch: %.10f", time2);
+  printf("\nInterpolationSearch: %.10f\n", time2);
   return 0;
 }

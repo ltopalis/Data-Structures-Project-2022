@@ -75,7 +75,7 @@ int main()
 
     if (k == m && k == -1)
         printf("There're no records!\n");
-    else if (k!=-1 && m != -1 && difftime(mktime(&ocean[k].date), mktime(&ocean[m].date) == 0.0))
+    else if (k != -1 && m != -1 && difftime(mktime(&ocean[k].date), mktime(&ocean[m].date) == 0.0))
     {
         switch (choice)
         {

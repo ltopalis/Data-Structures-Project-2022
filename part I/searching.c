@@ -238,5 +238,3 @@ int binary_search(table_data *array, time_t date, int start, int finish)
 
     return -1;
 }
-
-
