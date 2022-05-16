@@ -37,7 +37,7 @@ int main()
 
   double time2 = 0.0;
   clock_t start2 = clock();
-  int m = interpolationSearch(values, 0, DATA - 1, mktime(&timeinfo));
+  int m = interpolation_Search(values, 0, DATA - 1, mktime(&timeinfo));
   clock_t end2 = clock();
   time2 = (double)(end2 - start2) / CLOCKS_PER_SEC;
 

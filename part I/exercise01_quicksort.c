@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "file_manager.h"
 #include "fundamentals.h"
-#include "quicksort.h"
+#include "file_manager.h"
+#include "sort_functions.h"
 
 int main()
 {
