@@ -77,14 +77,16 @@ int main()
 
     // printAVL(root);
 
-    printf("Give us a date");
+    printf("Give us a date\n");
     scanf("%d", &date.tm_mon);
     scanf("%d", &date.tm_mday);
     scanf("%d", &date.tm_year);
     date.tm_hour = 0;
     date.tm_min = 0;
     date.tm_sec = 0;
-    printf("%lf", search(root, mktime(&date)));
+    date.tm_mon -= 1;
+    date.tm_year -= 1900;
+    printf("%.2lf\n", search(root, mktime(&date)));
     fclose(fp);
     free(pinakas);
     free(date_str);
@@ -223,23 +225,18 @@ int check_allocation(void *p)
 
 double search(Node *root, time_t date)
 {
-    double val;
     double diff;
 
     if (root == NULL)
         return -1.0;
 
-    diff = difftime(date, mktime(&root->key.date));
-    if (diff = 0.0) // found
+    diff = difftime(date, mktime(&(root->key).date));
+
+    if (diff == 0.0) // found
         return root->key.T_degC;
     else if (diff > 0.0) // metagenesterh
-    {
-        val = search(root->right, date);
-        return val;
-    }
+        return search(root->right, date);
     else if (diff < 0.0) // mikroterh
-    {
-        val = search(root->left, date);
-        return val;
-    }
+        return search(root->left, date);
+
 }
