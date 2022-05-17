@@ -31,51 +31,28 @@ Node *newNode(table_data key);
 Node *rightRotate(Node *y);
 Node *leftRotate(Node *x);
 Node *insert(Node *node, table_data key);
+Node *insert_from_file(char *filename, Node *root);
 void printAVL(Node *root);
 int getBalance(Node *N);
 int max(int a, int b);
 int check_allocation(void *p);
-double search(Node *root, time_t date);
+Node *search(Node *root, time_t date);
 
 int main()
 {
     struct tm date;
-    FILE *fp = NULL;
+
     Node *root = NULL;
-    table_data temp;
-    char *pinakas = (char *)malloc(sizeof(char) * LINE_SIZE);
-    char *date_str = (char *)malloc(sizeof(char) * (10 + 1));
-    if (check_allocation((char *)pinakas) == FALSE)
-        return FALSE;
-    if (check_allocation((char *)date_str) == FALSE)
-        return FALSE;
-    fp = fopen("ocean.csv", "r");
-    if (!fp)
+    Node *temp = NULL;
+
+    root = insert_from_file("ocean.csv", root);
+    if (!root)
     {
-        fprintf(stderr, "Error opening file!\n");
+        fprintf(stderr, "Error creating AVL\n");
         exit(0);
     }
 
-    pinakas = fgets(pinakas, LINE_SIZE - 1, fp);      // Διαβάζουμε την πρώτη γραμμή του
-                                                      // αρχείου με τις επικεφαλίδες κάθε τιμής
-    while (fgets(pinakas, LINE_SIZE - 1, fp) != NULL) // Η while εκτελέιται εώς ότου
-                                                      // φτάσουμε στο τέλος του αρχείου
-    {
-        strcpy(date_str, strtok(pinakas, ","));
-        temp.T_degC = atof(strtok(NULL, ","));
-        temp.date.tm_mon = atoi(strtok(date_str, "/")) - 1; /* month, range 0 to 11             */
-        temp.date.tm_mday = atoi(strtok(NULL, "/"));        /* day of the month, range 1 to 31  */
-        temp.date.tm_year = atoi(strtok(NULL, "/")) - 1900; /* The number of years since 1900   */
-        temp.date.tm_sec = 0;                               /* seconds,  range 0 to 59          */
-        temp.date.tm_min = 0;                               /* minutes, range 0 to 59           */
-        temp.date.tm_hour = 0;                              /* hours, range 0 to 23             */
-        temp.date.tm_wday = 0;                              /* day of the week, range 0 to 6    */
-        temp.date.tm_yday = 0;                              /* day in the year, range 0 to 365  */
-        temp.date.tm_isdst = -1;                            /* daylight saving time             */
-        root = insert(root, temp);
-    }
-
-    // printAVL(root);
+    printAVL(root);
 
     printf("Give us a date\n");
     scanf("%d", &date.tm_mon);
@@ -86,15 +63,13 @@ int main()
     date.tm_sec = 0;
     date.tm_mon -= 1;
     date.tm_year -= 1900;
-    printf("%.2lf\n", search(root, mktime(&date)));
-    fclose(fp);
-    free(pinakas);
-    free(date_str);
+    if ((temp = search(root, mktime(&date))) != NULL)
+        printf("%.2lf\n", temp->key.T_degC);
 
     return 0;
 }
 
-int height(struct Node *N)
+int height(Node *N)
 {
     if (N == NULL)
         return 0;
@@ -199,6 +174,50 @@ Node *insert(Node *node, table_data key)
     return node;
 }
 
+Node *insert_from_file(char *filename, Node *root)
+{
+    FILE *fp = NULL;
+    table_data temp;
+    char *pinakas = (char *)malloc(sizeof(char) * LINE_SIZE);
+    char *date_str = (char *)malloc(sizeof(char) * (10 + 1));
+    if (check_allocation((char *)pinakas) == FALSE)
+        return FALSE;
+    if (check_allocation((char *)date_str) == FALSE)
+        return FALSE;
+
+    fp = fopen("ocean.csv", "r");
+    if (!fp)
+    {
+        fprintf(stderr, "Error opening file!\n");
+        return NULL;
+    }
+
+    pinakas = fgets(pinakas, LINE_SIZE - 1, fp);      // Διαβάζουμε την πρώτη γραμμή του
+                                                      // αρχείου με τις επικεφαλίδες κάθε τιμής
+    while (fgets(pinakas, LINE_SIZE - 1, fp) != NULL) // Η while εκτελέιται εώς ότου
+                                                      // φτάσουμε στο τέλος του αρχείου
+    {
+        strcpy(date_str, strtok(pinakas, ","));
+        temp.T_degC = atof(strtok(NULL, ","));
+        temp.date.tm_mon = atoi(strtok(date_str, "/")) - 1; /* month, range 0 to 11             */
+        temp.date.tm_mday = atoi(strtok(NULL, "/"));        /* day of the month, range 1 to 31  */
+        temp.date.tm_year = atoi(strtok(NULL, "/")) - 1900; /* The number of years since 1900   */
+        temp.date.tm_sec = 0;                               /* seconds,  range 0 to 59          */
+        temp.date.tm_min = 0;                               /* minutes, range 0 to 59           */
+        temp.date.tm_hour = 0;                              /* hours, range 0 to 23             */
+        temp.date.tm_wday = 0;                              /* day of the week, range 0 to 6    */
+        temp.date.tm_yday = 0;                              /* day in the year, range 0 to 365  */
+        temp.date.tm_isdst = -1;                            /* daylight saving time             */
+        root = insert(root, temp);
+    }
+
+    fclose(fp);
+    free(pinakas);
+    free(date_str);
+
+    return root;
+}
+
 void printAVL(Node *root)
 {
     char *time_str = (char *)malloc(sizeof(char) * 11);
@@ -223,20 +242,19 @@ int check_allocation(void *p)
     return TRUE;
 }
 
-double search(Node *root, time_t date)
+Node *search(Node *root, time_t date)
 {
     double diff;
 
     if (root == NULL)
-        return -1.0;
+        return NULL;
 
     diff = difftime(date, mktime(&(root->key).date));
 
     if (diff == 0.0) // found
-        return root->key.T_degC;
+        return root;
     else if (diff > 0.0) // metagenesterh
         return search(root->right, date);
     else if (diff < 0.0) // mikroterh
         return search(root->left, date);
-
 }
