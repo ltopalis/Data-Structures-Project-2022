@@ -182,7 +182,7 @@ Node *search(Node *root, time_t date)
     double diff;
 
     if (root == NULL)
-        return NULL;
+        return root;
 
     diff = difftime(date, mktime(&(root->key).date));
 
