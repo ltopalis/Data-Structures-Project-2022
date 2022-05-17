@@ -2,72 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-
-#define TRUE 1
-#define FALSE 0
-#define LINE_SIZE 100
-#define DATA 1405
-#define TABLE_SIZE 1405
-
-struct table_data
-{
-    struct tm date;
-    double T_degC;
-};
-
-struct Node
-{
-    struct table_data key; // table_data key
-    struct Node *left;     //
-    struct Node *right;
-    int height;
-};
-
-typedef struct table_data table_data;
-typedef struct Node Node;
-
-int height(Node *N);
-Node *newNode(table_data key);
-Node *rightRotate(Node *y);
-Node *leftRotate(Node *x);
-Node *insert(Node *node, table_data key);
-Node *insert_from_file(char *filename, Node *root);
-void printAVL(Node *root);
-int getBalance(Node *N);
-int max(int a, int b);
-int check_allocation(void *p);
-Node *search(Node *root, time_t date);
-
-int main()
-{
-    struct tm date;
-
-    Node *root = NULL;
-    Node *temp = NULL;
-
-    root = insert_from_file("ocean.csv", root);
-    if (!root)
-    {
-        fprintf(stderr, "Error creating AVL\n");
-        exit(0);
-    }
-
-    printAVL(root);
-
-    printf("Give us a date\n");
-    scanf("%d", &date.tm_mon);
-    scanf("%d", &date.tm_mday);
-    scanf("%d", &date.tm_year);
-    date.tm_hour = 0;
-    date.tm_min = 0;
-    date.tm_sec = 0;
-    date.tm_mon -= 1;
-    date.tm_year -= 1900;
-    if ((temp = search(root, mktime(&date))) != NULL)
-        printf("%.2lf\n", temp->key.T_degC);
-
-    return 0;
-}
+#include "AVL.h"
 
 int height(Node *N)
 {
@@ -185,7 +120,7 @@ Node *insert_from_file(char *filename, Node *root)
     if (check_allocation((char *)date_str) == FALSE)
         return FALSE;
 
-    fp = fopen("ocean.csv", "r");
+    fp = fopen(filename, "r");
     if (!fp)
     {
         fprintf(stderr, "Error opening file!\n");
@@ -255,6 +190,6 @@ Node *search(Node *root, time_t date)
         return root;
     else if (diff > 0.0) // metagenesterh
         return search(root->right, date);
-    else if (diff < 0.0) // mikroterh
+    else // mikroterh
         return search(root->left, date);
 }
