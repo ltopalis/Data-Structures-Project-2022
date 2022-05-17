@@ -13,5 +13,7 @@ int main()
 
     root = insert_from_file("ocean.csv", root);
 
-    
+    avl_by_date(root);
+
+    exit(0);
 }
