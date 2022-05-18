@@ -147,7 +147,7 @@ int change_temp(Node *root)
     scanf("%s", choice);
     if (strcmp(choice, "y") == 0)
     {
-        root->key.T_degC = new_temp;
+        searching_node->key.T_degC = new_temp;
         return TRUE;
     }
 
