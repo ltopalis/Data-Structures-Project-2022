@@ -7,5 +7,4 @@ void menu(Node *root);
 void AVL(Node *root);
 void avl_by_date(Node *root);
 
-
 #endif

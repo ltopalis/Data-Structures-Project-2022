@@ -143,7 +143,7 @@ void avl_by_date(Node *root)
         default:
             break;
         }
-        
+
         print_equal(20);
         printf("\nPress enter to continue...\n");
         fflush(stdin);

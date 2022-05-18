@@ -162,4 +162,3 @@ void print_equal(int number)
         printf("=");
     printf("\n");
 }
-
