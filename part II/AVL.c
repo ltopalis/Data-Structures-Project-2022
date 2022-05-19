@@ -59,6 +59,20 @@ Node *leftRotate(Node *x)
     return y;
 }
 
+Node *LR_Rotate(Node *x)
+{
+    x->left = leftRotate(x->left);
+
+    return rightRotate(x);
+}
+
+Node *RL_Rotate(Node *x)
+{
+    x->right = leftRotate(x->right);
+
+    return rightRotate(x);
+}
+
 int getBalance(Node *N)
 {
     if (N == NULL)
@@ -152,6 +166,54 @@ Node *insert_from_file(char *filename, Node *root)
 
     return root;
 }
+
+int delete_root(Node *root, table_data *elem){
+
+    if(root->left != NULL || root->right!=NULL) // H riza exei paidia
+        return FALSE;
+
+    *elem=root->key;
+    free(root);
+    root=NULL;
+    return TRUE;
+
+}
+
+int delete_right(Node *parent, table_data *elem)
+{
+    Node *current;
+
+    if(parent->right == NULL)   // den yparxei deksi paidi
+        return FALSE;
+
+    current=parent->right;
+    if(current->left!=NULL || current->right!=NULL) // to stoixeio exei toulaxiston 1 paidi
+        return FALSE;
+
+    *elem = current->key;
+    free(current);
+    parent->right = NULL;
+    return TRUE;
+}
+
+int delete_left(Node *parent, table_data *elem)
+{
+    Node *current;
+
+    if(parent->left == NULL)   // den yparxei deksi paidi
+        return FALSE;
+
+    current=parent->left;
+    if(current->left!=NULL || current->right!=NULL) // to stoixeio exei toulaxiston 1 paidi
+        return FALSE;
+
+    *elem = current->key;
+    free(current);
+    parent->left = NULL;
+    return TRUE;
+}
+
+
 
 void printAVL(Node *root)
 {
