@@ -136,7 +136,7 @@ void avl_by_date(Node *root)
                 printf("Temperature has been successfully changed!\n");
             break;
         case 4:
-            printf("Under construction\n");
+            delete(root);
             break;
         case 5:
             return;

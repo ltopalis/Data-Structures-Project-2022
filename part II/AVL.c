@@ -167,27 +167,27 @@ Node *insert_from_file(char *filename, Node *root)
     return root;
 }
 
-int delete_root(Node *root, table_data *elem){
+int delete_root(Node *root, table_data *elem)
+{
 
-    if(root->left != NULL || root->right!=NULL) // H riza exei paidia
+    if (root->left != NULL || root->right != NULL) // H riza exei paidia
         return FALSE;
 
-    *elem=root->key;
+    *elem = root->key;
     free(root);
-    root=NULL;
+    root = NULL;
     return TRUE;
-
 }
 
 int delete_right(Node *parent, table_data *elem)
 {
     Node *current;
 
-    if(parent->right == NULL)   // den yparxei deksi paidi
+    if (parent->right == NULL) // den yparxei deksi paidi
         return FALSE;
 
-    current=parent->right;
-    if(current->left!=NULL || current->right!=NULL) // to stoixeio exei toulaxiston 1 paidi
+    current = parent->right;
+    if (current->left != NULL || current->right != NULL) // to stoixeio exei toulaxiston 1 paidi
         return FALSE;
 
     *elem = current->key;
@@ -200,11 +200,11 @@ int delete_left(Node *parent, table_data *elem)
 {
     Node *current;
 
-    if(parent->left == NULL)   // den yparxei deksi paidi
+    if (parent->left == NULL) // den yparxei deksi paidi
         return FALSE;
 
-    current=parent->left;
-    if(current->left!=NULL || current->right!=NULL) // to stoixeio exei toulaxiston 1 paidi
+    current = parent->left;
+    if (current->left != NULL || current->right != NULL) // to stoixeio exei toulaxiston 1 paidi
         return FALSE;
 
     *elem = current->key;
@@ -212,8 +212,6 @@ int delete_left(Node *parent, table_data *elem)
     parent->left = NULL;
     return TRUE;
 }
-
-
 
 void printAVL(Node *root)
 {
@@ -254,4 +252,135 @@ Node *search(Node *root, time_t date)
         return search(root->right, date);
     else // mikroterh
         return search(root->left, date);
+}
+
+Node *node_delete(Node *root, time_t date)
+{
+    Node *current, *parent, *next_ordered;
+    int p; // 1 -> deksi paidi, 2 -> aristero paidi
+    int balance;
+    double diff;
+
+    // Anazitisi
+
+    parent = NULL;
+    current = root;
+    while (current != NULL)
+    {
+        diff = difftime(date, mktime(&current->key.date));
+
+        if (diff == 0.0)
+            break;
+        else if (diff < 0.0)
+        {
+            parent = current;
+            p = 1;
+            current = current->left;
+        }
+        else // diff > 0.0
+        {
+            parent = current;
+            p = 2;
+            current = current->right;
+        }
+    }
+    if (current == NULL)
+    {
+        printf("\nThere's no such date\n");
+        return NULL;
+    }
+
+    // kanena paidi
+    if (current->left == NULL && current->right == NULL)
+    {
+        free(current);
+
+        if (parent == NULL)
+            root = NULL;
+        else if (p == 1)
+            parent->left = NULL;
+        else
+            parent->right = NULL;
+    }
+    // ena aristero paidi
+    else if (current->left != NULL && current->right == NULL)
+    {
+        if (parent == NULL)
+            root = current->left;
+        else if (p == 1)
+            parent->left = current->left;
+        else
+            parent->right = current->left;
+        free(current);
+    }
+    // ena deksi paidi
+    else if (current->left == NULL && current->right != NULL)
+    {
+        if (parent == NULL)
+            root = current->right;
+        else if (p == 1)
+            parent->left = current->right;
+        else
+            parent->right = current->right;
+        free(current);
+    }
+    // dyo paidia
+    else
+    {
+        p = 1;
+        next_ordered = current->right;
+
+        while (next_ordered->left != NULL)
+        {
+            parent = next_ordered;
+            next_ordered = next_ordered->left;
+            p = 2;
+        }
+
+        current->key.date.tm_mon = next_ordered->key.date.tm_mon;
+        current->key.date.tm_mday = next_ordered->key.date.tm_mday;
+        current->key.date.tm_year = next_ordered->key.date.tm_year;
+        current->key.date.tm_hour = next_ordered->key.date.tm_hour;
+        current->key.date.tm_min = next_ordered->key.date.tm_min;
+        current->key.date.tm_sec = next_ordered->key.date.tm_sec;
+        current->key.T_degC = next_ordered->key.T_degC;
+
+        if (p == 1) // epomenos deksi paidi
+        {
+            current->right = next_ordered->right;
+            free(next_ordered);
+        }
+        else
+        {
+            parent->left = next_ordered->right;
+            free(next_ordered);
+        }
+    }
+
+    // to dendro exei enan komvo
+    if (root == NULL)
+        return root;
+
+    root->height = 1 + max(height(root->left), height(root->right));
+    balance = getBalance(root);
+
+    // LL rotation
+    if (balance > 1 && getBalance(root->left) >= 0)
+        return rightRotate(root);
+
+    // LR rotation
+    if (balance > 1 && getBalance(root->left) < 0)
+        return LR_Rotate(root);
+
+    // RR rotation
+    if (balance < -1 && getBalance(root->right) <= 0)
+        return leftRotate(root);
+
+    // RL rotation
+    if (balance < -1 && getBalance(root->right) > 0)
+        return RL_Rotate(root);
+
+    printf("\nThe record has been successfully deleted!\n");
+
+    return root;
 }

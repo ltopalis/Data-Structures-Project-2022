@@ -43,5 +43,7 @@ int getBalance(Node *N);
 int max(int a, int b);
 int check_allocation(void *p);
 Node *search(Node *root, time_t date);
+Node *node_delete(Node *root, time_t date);
+
 
 #endif

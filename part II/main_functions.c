@@ -162,3 +162,45 @@ void print_equal(int number)
         printf("=");
     printf("\n");
 }
+
+void delete (Node *root)
+{
+    table_data user_key;
+    int check;
+    char *time_str = (char *)malloc(sizeof(char) * 11);
+    if (!check_allocation(time_str))
+    {
+        fprintf(stderr, "Error\n");
+        return;
+    }
+
+    printf("Date to be searched\n");
+    do
+    {
+        printf("Give month: ");
+        check = scanf("%d", &user_key.date.tm_mon);
+        check = !(user_key.date.tm_mon > 0 && user_key.date.tm_mon < 13);
+    } while (check);
+
+    do
+    {
+        printf("Give day: ");
+        check = scanf("%d", &user_key.date.tm_mday);
+        check = !(user_key.date.tm_mday > 0 && user_key.date.tm_mday < 32);
+    } while (check);
+
+    do
+    {
+        printf("Give year: ");
+        check = scanf("%d", &user_key.date.tm_year);
+        check = !(user_key.date.tm_year > 0);
+    } while (check);
+
+    user_key.date.tm_year -= 1900;
+    user_key.date.tm_mon -= 1;
+    user_key.date.tm_hour = 0;
+    user_key.date.tm_min = 0;
+    user_key.date.tm_sec = 0;
+
+    root = node_delete(root, mktime(&user_key.date));
+}
