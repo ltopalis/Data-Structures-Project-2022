@@ -45,5 +45,4 @@ int check_allocation(void *p);
 Node *search(Node *root, time_t date);
 Node *node_delete(Node *root, time_t date);
 
-
 #endif

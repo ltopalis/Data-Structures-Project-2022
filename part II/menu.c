@@ -8,7 +8,6 @@
 
 void clean()
 {
-
 #ifdef _WIN32
     system("cls");
 #elif __unix__
@@ -136,7 +135,7 @@ void avl_by_date(Node *root)
                 printf("Temperature has been successfully changed!\n");
             break;
         case 4:
-            delete(root);
+            delete (root);
             break;
         case 5:
             return;
