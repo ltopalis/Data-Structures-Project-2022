@@ -4,6 +4,7 @@
 #include <string.h>
 #include "AVL.h"
 
+int i =0;
 int height(Node *N)
 {
     if (N == NULL)
@@ -216,14 +217,15 @@ int delete_left(Node *parent, table_data *elem)
 void printAVL(Node *root)
 {
     char *time_str = (char *)malloc(sizeof(char) * 11);
+    
+    if(root == NULL)
+        return;
 
-    if (root != NULL)
-    {
-        strftime(time_str, 11, "%m/%d/%Y", &root->key.date);
-        printf("%s %05.2lf\n", time_str, root->key.T_degC);
-        printAVL(root->left);
-        printAVL(root->right);
-    }
+    printAVL(root->left);
+    strftime(time_str, 11, "%m/%d/%Y", &root->key.date);
+    printf("(%04d) %s %05.2lf\n", ++i,time_str, root->key.T_degC);
+    printAVL(root->right);
+
 }
 
 int check_allocation(void *p)
@@ -241,17 +243,18 @@ Node *search(Node *root, time_t date)
 {
     double diff;
 
-    if (root == NULL)
-        return root;
+    while (root != NULL)
+    {
+        diff = difftime(date, mktime(&(root->key.date)));
 
-    diff = difftime(date, mktime(&(root->key).date));
-
-    if (diff == 0.0) // found
-        return root;
-    else if (diff > 0.0) // metagenesterh
-        return search(root->right, date);
-    else // mikroterh
-        return search(root->left, date);
+        if (diff == 0.0) // found
+            return root;
+        else if (diff < 0.0) // metagenesteri
+            root = root->left;
+        else
+            root = root->right;
+    }
+    return root;
 }
 
 Node *node_delete(Node *root, time_t date)
