@@ -6,7 +6,7 @@
 #define size 1405
 #define LINE_SIZE 1405
 #define FALSE 0
-#define N 10
+#define buckets 11
 
 struct table_data
 {
@@ -14,124 +14,104 @@ struct table_data
     double T_degC;
 };
 
-typedef struct DataItem
+struct DataItem
 {
     struct table_data data;
-    int key;
-    struct node *next;
+    struct DataItem *next;
 };
 
-struct DataItem *chain[size], *c;
+typedef struct table_data table_data;
+typedef struct DataItem DataItem;
 
-void begin()
+int hash_function(char *date);
+void insert(table_data data, int key, DataItem *array[]);
+void init(DataItem **array);
+
+int main()
 {
+    DataItem *array[10];
+    table_data t;
+
+    init(array);
+
+    printf("%d\n", hash_function("10/05/2014"));
+    insert(t, hash_function("10/05/2014"), array);
+
+    exit(0);
+}
+
+int hash_function(char *date)
+{
+    int i, sum;
+
+    sum = 0;
+    for (i = 0; i < (int)strlen(date); i++)
+        sum += (int)date[i];
+
+    return (sum % buckets);
+}
+
+void insert(table_data data, int key, DataItem *array[])
+{
+    DataItem *newNode = (DataItem *)malloc(sizeof(DataItem));
+    DataItem *current = (DataItem *)malloc(sizeof(DataItem));
+    if (!newNode)
+    {
+        fprintf(stderr, "Error allocating memory!\n");
+        return;
+    }
+    if (!current)
+    {
+        fprintf(stderr, "Error allocating memory!\n");
+        return;
+    }
+
+    if (array[key] == NULL)
+    {
+        array[key] = (DataItem *)malloc(sizeof(DataItem));
+        if (!array[key])
+        {
+            fprintf(stderr, "Error allocating memory!\n");
+            return;
+        }
+        array[key]->data.date.tm_mon = data.date.tm_mon;
+        array[key]->data.date.tm_mday = data.date.tm_mday;
+        array[key]->data.date.tm_year = data.date.tm_year;
+        array[key]->data.date.tm_hour = data.date.tm_hour;
+        array[key]->data.date.tm_min = data.date.tm_min;
+        array[key]->data.date.tm_sec = data.date.tm_sec;
+        array[key]->data.date.tm_isdst = data.date.tm_isdst;
+        array[key]->data.T_degC = data.T_degC;
+        array[key]->next = NULL;
+    }
+    else
+    {
+        current = array[key];
+        while (current->next != NULL)
+        {
+            current = current->next;
+        }
+        current->next = (DataItem *)malloc(sizeof(DataItem));
+        if (!current->next)
+        {
+            fprintf(stderr, "Error allocating memory!\n");
+            return;
+        }
+        current->next->data.date.tm_mon = data.date.tm_mon;
+        current->next->data.date.tm_mday = data.date.tm_mday;
+        current->next->data.date.tm_year = data.date.tm_year;
+        current->next->data.date.tm_hour = data.date.tm_hour;
+        current->next->data.date.tm_min = data.date.tm_min;
+        current->next->data.date.tm_sec = data.date.tm_sec;
+        current->next->data.date.tm_isdst = data.date.tm_isdst;
+        current->next->data.T_degC = data.T_degC;
+        current->next->next = NULL;
+    }
+}
+
+void init(DataItem **array){
     int i;
-    for (i = 0; i < size; i++)
-        chain[i] = NULL;
+
+    for(i=0; i<buckets - 1; i++)
+        array[i] = NULL;
 }
-
-void insert(struct DataItem *node,char *date )
-{
-    int key = hash_function( *date );
-    struct DataItem *newnode = (struct DataItem *)malloc(sizeof(struct DataItem));
-    newnode->data = key;
-    newnode->next = NULL;
-    if (chain[key] = NULL)
-        chain[key] = newnode;
-    else
-    {
-        c = chain[key];
-        while (c->next != NULL)
-        {
-            c = c->next;
-        }
-        c->next = newnode;
-    }}
-    int hash_function(char *date)
-    {
-        data
-        int i;
-        int sum;
-        int key;
-        for (i = 0; i <= N; i++)
-        {
-            sum += (int)data_str[i];
-        }
-        key = sum % N;
-        return key;
-    }
-    int *hash_file(char *filename, struct DataItem *node)
-    {
-        FILE *fp = NULL;
-        struct table_data temp;
-        char *pinakas = (char *)malloc(sizeof(char) * LINE_SIZE);
-        char *date_str = (char *)malloc(sizeof(char) * (10 + 1));
-        if (check_allocation((char *)pinakas) == FALSE)
-            return FALSE;
-        if (check_allocation((char *)date_str) == FALSE)
-            return FALSE;
-
-        fp = fopen(filename, "r");
-        if (!fp)
-        {
-            fprintf(stderr, "Error opening file!\n");
-            return NULL;
-        }
-
-        pinakas = fgets(pinakas, LINE_SIZE - 1, fp);      // Διαβάζουμε την πρώτη γραμμή του
-                                                          // αρχείου με τις επικεφαλίδες κάθε τιμής
-        while (fgets(pinakas, LINE_SIZE - 1, fp) != NULL) // Η while εκτελέιται εώς ότου
-                                                          // φτάσουμε στο τέλος του αρχείου
-        {
-            strcpy(date_str, strtok(pinakas, ","));
-            char *date=read(*date_str);
-            temp.T_degC = atof(strtok(NULL, ","));
-            temp.date.tm_mon = atoi(strtok(date_str, "/")) - 1; /* month, range 0 to 11             */
-            temp.date.tm_mday = atoi(strtok(NULL, "/"));        /* day of the month, range 1 to 31  */
-            temp.date.tm_year = atoi(strtok(NULL, "/")) - 1900; /* The number of years since 1900   */
-            temp.date.tm_sec = 0;                               /* seconds,  range 0 to 59          */
-            temp.date.tm_min = 0;                               /* minutes, range 0 to 59           */
-            temp.date.tm_hour = 0;                              /* hours, range 0 to 23             */
-            temp.date.tm_wday = 0;                              /* day of the week, range 0 to 6    */
-            temp.date.tm_yday = 0;                              /* day in the year, range 0 to 365  */
-            temp.date.tm_isdst = -1;                            /* daylight saving time             */
-            node = insert(node, *date);
-        }
-
-        fclose(fp);
-        free(pinakas);
-        free(date_str);
-    }
-    char *read(char *date)
-{
-  char *code = malloc(1000 * sizeof(char));
-
-  do
-  {
-    *code++ = (char)fgetc(date);
-
-  } while(*code != EOF);
-  return code;
-}
-void display(){
-int i=0;
-for(i=0;i<size;i++){
-    printf("\n");
-    if(chain[i]=NULL)
-        {
-        continue;
-        }
-    else
-        for(c=chain[i];c!=NULL;c=c->next) printf("->%d",c->data);
-}}
-
-main(){
-begin();
-DataItem *root = NULL;
-hash_file("ocean.csv",root);
-display();
-
-
-
-}
-
