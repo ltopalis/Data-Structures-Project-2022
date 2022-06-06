@@ -243,13 +243,13 @@ int check_allocation(void *p)
 Node *search(Node *root, time_t date)
 {
     double diff;
-    char t[20];
 
     while (root != NULL)
     {
         root->key.date.tm_hour = 0;
         root->key.date.tm_min = 0;
         root->key.date.tm_sec = 0;
+        diff = difftime(date, mktime(&root->key.date));
 
         if (fabs(diff) >= 0.0 && fabs(diff) <= 3600) // found
             return root;

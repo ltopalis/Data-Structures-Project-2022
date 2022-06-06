@@ -8,13 +8,18 @@
 
 void clean()
 {
+    int check;
+
 #ifdef _WIN32
-    system("cls");
+    check = system("cls");
 #elif __unix__
-    system("clear");
+    check = system("clear");
 #elif __APPLE__
-    system("clear");
+    check = system("clear");
 #endif
+
+    if (check == -1)
+        fprintf(stderr, "error cleaning console!\n");
 }
 
 void menu(Node *root)
@@ -29,7 +34,7 @@ void menu(Node *root)
             printf("2. Hashing\n");
             printf("3. Exit\n");
             printf("choice? ");
-            scanf("%d", &choice);
+            check = scanf("%d", &choice);
             check = (choice > 0 && choice < 4);
             if (!check)
             {
@@ -70,7 +75,7 @@ void AVL(Node *root)
             printf("2. by temperature\n");
             printf("3. back\n");
             printf("choice? ");
-            scanf("%d", &choice);
+            check = scanf("%d", &choice);
             check = (choice > 0 && choice < 4);
             if (!check)
             {
@@ -111,7 +116,7 @@ void avl_by_date(Node *root)
             printf("4. delete given a date\n");
             printf("5. back\n");
             printf("choice? ");
-            scanf("%d", &choice);
+            check = scanf("%d", &choice);
             check = (choice > 0 && choice < 6);
             if (!check)
             {
@@ -143,7 +148,7 @@ void avl_by_date(Node *root)
             break;
         }
 
-        print_equal(20);
+        print_equal(44);
         printf("\nPress enter to continue...\n");
         fflush(stdin);
         getc(stdin);

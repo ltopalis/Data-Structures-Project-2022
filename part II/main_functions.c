@@ -140,11 +140,11 @@ int change_temp(Node *root)
     }
 
     printf("\nGive the new temp: ");
-    scanf("%lf", &new_temp);
+    check = scanf("%lf", &new_temp);
     strftime(time_str, 11, "%m/%d/%Y", &searching_node->key.date);
     fflush(NULL);
     printf("Are you sure you want to change the temperature of date %s to %lf?(y/n) ", time_str, new_temp);
-    scanf("%s", choice);
+    check = scanf("%s", choice);
     if (strcmp(choice, "y") == 0)
     {
         searching_node->key.T_degC = new_temp;
