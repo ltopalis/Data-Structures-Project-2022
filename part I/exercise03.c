@@ -10,12 +10,12 @@ int main()
 {
   table_data values[DATA];
   char contents[LINE_SIZE];
-  int year, mon, day;
+  int year, mon, day, n, m;
   struct tm timeinfo;
   do
   {
     printf("Give year, month and day.\n");
-    scanf("%d\t%d\t%d", &year, &mon, &day);
+    m = scanf("%d\t%d\t%d", &year, &mon, &day);
   } while (year < 0 || mon < 0 || day <= 0);
 
   open_file("ocean.csv", values, contents);
@@ -31,13 +31,13 @@ int main()
 
   double time1 = 0.0;
   clock_t start1 = clock();
-  int n = binarySearch(values, 0, DATA - 1, mktime(&timeinfo));
+  n = binarySearch(values, 0, DATA - 1, mktime(&timeinfo));
   clock_t end1 = clock();
   time1 = (double)(end1 - start1) / CLOCKS_PER_SEC;
 
   double time2 = 0.0;
   clock_t start2 = clock();
-  int m = interpolation_Search(values, 0, DATA - 1, mktime(&timeinfo));
+  m = interpolation_Search(values, 0, DATA - 1, mktime(&timeinfo));
   clock_t end2 = clock();
   time2 = (double)(end2 - start2) / CLOCKS_PER_SEC;
 
@@ -54,7 +54,7 @@ int main()
   {
     int choice;
     printf("\n1.Temperature\n2.Phosphate\n3.Both\n(1, 2 or 3)\n");
-    scanf("%d", &choice);
+    m=scanf("%d", &choice);
     printf("date: %d %d %d\n", values[n].date.tm_year + 1900, values[n].date.tm_mon + 1, values[n].date.tm_mday);
     if (choice == 1)
     {
