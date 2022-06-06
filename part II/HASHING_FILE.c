@@ -32,7 +32,7 @@ void begin()
 
 void insert(struct DataItem *node,char *date )
 {
-    int key = hash_function( char *date );
+    int key = hash_function( *date );
     struct DataItem *newnode = (struct DataItem *)malloc(sizeof(struct DataItem));
     newnode->data = key;
     newnode->next = NULL;
