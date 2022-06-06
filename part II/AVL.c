@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <math.h>
 #include "AVL.h"
 
 int height(Node *N)
@@ -242,12 +243,15 @@ int check_allocation(void *p)
 Node *search(Node *root, time_t date)
 {
     double diff;
+    char t[20];
 
     while (root != NULL)
     {
-        diff = difftime(date, mktime(&(root->key.date)));
+        root->key.date.tm_hour = 0;
+        root->key.date.tm_min = 0;
+        root->key.date.tm_sec = 0;
 
-        if (diff == 0.0) // found
+        if (fabs(diff) >= 0.0 && fabs(diff) <= 3600) // found
             return root;
         else if (diff < 0.0) // metagenesteri
             root = root->left;
@@ -270,9 +274,12 @@ Node *node_delete(Node *root, time_t date)
     current = root;
     while (current != NULL)
     {
+        current->key.date.tm_hour = 0;
+        current->key.date.tm_min = 0;
+        current->key.date.tm_sec = 0;
         diff = difftime(date, mktime(&current->key.date));
 
-        if (diff == 0.0)
+        if (fabs(diff) >= 0.0 && fabs(diff) <= 3600)
             break;
         else if (diff < 0.0)
         {
