@@ -4,7 +4,6 @@
 #include <string.h>
 #include "AVL.h"
 
-int i =0;
 int height(Node *N)
 {
     if (N == NULL)
@@ -217,15 +216,16 @@ int delete_left(Node *parent, table_data *elem)
 void printAVL(Node *root)
 {
     char *time_str = (char *)malloc(sizeof(char) * 11);
-    
-    if(root == NULL)
+
+    if (root == NULL)
         return;
 
     printAVL(root->left);
     strftime(time_str, 11, "%m/%d/%Y", &root->key.date);
-    printf("(%04d) %s %05.2lf\n", ++i,time_str, root->key.T_degC);
-    printAVL(root->right);
+    printf("%s %05.2lf\n", time_str, root->key.T_degC);
 
+    printAVL(root->right);
+    free(time_str);
 }
 
 int check_allocation(void *p)
