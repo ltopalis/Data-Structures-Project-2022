@@ -1,47 +1,26 @@
-.PHONY: compile clean
+compiler := gcc
+flags := -Wall -Wextra -O3
+neccessary := fundamentals.o file_manager.o sort_functions.o
 
 all: compile clean
 
-compile:
-# compile the necessary codes
+compile: fundamentals file_manager sort_functions searching exercise01_insertion_sort exercise01_quicksort exercise02_countingSort exercise02_heapSort exercise03 exercise04 tester
 	@echo "Compiling..."
-	@gcc -c -Wall -Wextra -O3 fundamentals.c
-	@gcc -c -Wall -Wextra -O3 file_manager.c
-	@gcc -c -Wall -Wextra -O3 sort_functions.c
-	@gcc -c -Wall -Wextra -O3 searching.c -lm
+	@${compiler} ${flags} ${neccessary} exercise01_insertion_sort.o -o insertionSort.out
+	@${compiler} ${flags} ${neccessary} exercise01_quicksort.o -o quickSort.out
+	@${compiler} ${flags} ${neccessary} searching.o exercise03.o -o interpolation.out -lm
+	@${compiler} ${flags} ${neccessary} exercise02_countingSort.o -o countingSort.out
+	@${compiler} ${flags} ${neccessary} exercise02_heapSort.o -o heapSort.out
+	@${compiler} ${flags} ${neccessary} searching.o exercise04.o -o BIS.out -lm
+	@${compiler} ${flags} ${neccessary} searching.o tester.o -o tester.out -lm
+	@echo "Executable files have been created!"
 
-# compile insertion sort code
-	@gcc -c -Wall -Wextra -O3 exercise01_insertion_sort.c
-	@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o exercise01_insertion_sort.o -o insertionSort.out
-	@rm exercise01_insertion_sort.o
+fundamentals file_manager sort_functions searching exercise01_insertion_sort exercise01_quicksort exercise02_countingSort exercise02_heapSort exercise03 exercise04:
+	@${compiler} ${flags} -c $@.c
 
-# compile quick sort code
-	@gcc -c -Wall -Wextra -O3 exercise01_quicksort.c
-	@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o exercise01_quicksort.o -o quickSort.out
-	@rm exercise01_quicksort.o
+tester: fundamentals file_manager sort_functions searching
+	@${compiler} ${flags} -c tester.c
 
-# compile bubble and interpolation sort code
-	@gcc -c -Wall -Wextra -O3 exercise03.c
-	@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o searching.o exercise03.o -o interpolation.out -lm
-	@rm exercise03.o
-
-# compile counting sort code
-	@gcc -c -Wall -Wextra -O3 exercise02_countingSort.c
-	@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o exercise02_countingSort.o -o countingSort.out
-	@rm exercise02_countingSort.o
-
-# compile Heap sort code
-	@gcc -c -Wall -Wextra -O3 exercise02_heapSort.c
-	@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o exercise02_heapSort.o -o heapSort.out
-	@rm exercise02_heapSort.o
-
-# compile BIS code
-	@gcc -c -Wall -Wextra -O3 exercise04.c -lm
-	@gcc -Wall -Wextra -O3 fundamentals.o file_manager.o sort_functions.o searching.o exercise04.o -o BIS.out -lm
-	@rm exercise04.o
-
-	@echo "Executable file has been created"
-	
-clean:
+clean: 
 	@echo "Removing object files..."
 	@rm *.o
