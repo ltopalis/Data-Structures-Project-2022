@@ -23,7 +23,6 @@ int main()
 
     printf("Sorting...\n");
     bubble_sort(ocean, DATA, TIME);
-    // print_array(ocean, DATA);
 
     do
     {
@@ -48,7 +47,7 @@ int main()
     t.tm_hour = 0; /* hours, range 0 to 23             */
     t.tm_wday = 0; /* day of the week, range 0 to 6    */
     t.tm_yday = 0; /* day in the year, range 0 to 365  */
-    t.tm_isdst = -1;
+    t.tm_isdst = 0;
 
     c1 = clock();
     k = binary_interpolation_search(ocean, mktime(&t), DATA);
