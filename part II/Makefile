@@ -1,17 +1,23 @@
-.PHONY: compile clean
+compiler := gcc
+flags := -Wall -Wextra -O3
+objectFiles := AVL.o main_functions.o menu.o main.o
+neccessary := AVL main_functions menu main
+
+.PHONY: compile clean delete
 
 all: compile clean
 
-compile:
-# compile the necessary codes
+compile: ${neccessary}
 	@echo "Compiling..."
-	@gcc -c -Wall -Wextra -O3 AVL.c
-	@gcc -c -Wall -Wextra -O3 main_functions.c
-	@gcc -c -Wall -Wextra -O3 menu.c
-	@gcc -c -Wall -Wextra -O3 main.c
-	@gcc -Wall -Wextra -O3 AVL.o main_functions.o menu.o main.o -o part2.out
+	@${compiler} ${flags} ${objectFiles} -o part2 -lm
 	@echo "Executable file has been created"
+
+${neccessary}:
+	@${compiler} ${flags} -c $@.c
 	
 clean:
 	@echo "Removing object files..."
 	@rm *.o
+
+delete:
+	@rm part2
