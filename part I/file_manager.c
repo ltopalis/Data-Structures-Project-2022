@@ -68,7 +68,7 @@ int open_file(char *filename, table_data *data_array, char *contents)
         data_array[i].date.tm_hour = 0;                              /* hours, range 0 to 23             */
         data_array[i].date.tm_wday = 0;                              /* day of the week, range 0 to 6    */
         data_array[i].date.tm_yday = 0;                              /* day in the year, range 0 to 365  */
-        data_array[i].date.tm_isdst = -1;                            /* daylight saving time             */
+        data_array[i].date.tm_isdst = 0;                             /* daylight saving time             */
         i++;
     }
 
