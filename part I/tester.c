@@ -6,7 +6,7 @@
 #include "searching.h"
 #include "sort_functions.h"
 
-#define UINT_MAX 0xfff
+#define UINT_MAX 0xfffe
 #define TRUE 1
 #define FALSE 0
 
