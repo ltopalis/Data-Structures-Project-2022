@@ -69,9 +69,9 @@ Node *LR_Rotate(Node *x)
 
 Node *RL_Rotate(Node *x)
 {
-    x->right = leftRotate(x->right);
+    x->right = rightRotate(x->right);
 
-    return rightRotate(x);
+    return leftRotate(x);
 }
 
 int getBalance(Node *N)
@@ -109,17 +109,11 @@ Node *insert(Node *node, table_data key)
 
     // Left Right
     if (balance > 1 && difftime(mktime(&key.date), mktime(&node->left->key.date)) > 0)
-    {
-        node->left = leftRotate(node->left);
-        return rightRotate(node);
-    }
+        return LR_Rotate(node);
 
     // Right Left
     if (balance < -1 && difftime(mktime(&key.date), mktime(&node->right->key.date)) < 0)
-    {
-        node->right = rightRotate(node->right);
-        return leftRotate(node);
-    }
+        return RL_Rotate(node);
 
     return node;
 }
