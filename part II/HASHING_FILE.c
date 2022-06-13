@@ -58,13 +58,8 @@ int hash_function(char *date)
 void insert(table_data data, int key, DataItem *array[])
 {
     DataItem *newNode = (DataItem *)malloc(sizeof(DataItem));
-    DataItem *current = (DataItem *)malloc(sizeof(DataItem));
+    DataItem *current;
     if (!newNode)
-    {
-        fprintf(stderr, "Error allocating memory!\n");
-        return;
-    }
-    if (!current)
     {
         fprintf(stderr, "Error allocating memory!\n");
         return;
@@ -167,28 +162,21 @@ void insert_from_file(char *filename, DataItem *array[])
 DataItem *search(DataItem **array, struct tm date)
 {
     char strdate[11] = {'0'};
-    DataItem *node = (DataItem *)malloc(sizeof(DataItem));
-    if (!node)
-    {
-        fprintf(stderr, "Error Allocating Memory!");
-        return NULL;
-    }
+    DataItem *node;
 
     strftime(strdate, 11, "%m/%d/%Y", &date);
     node = array[hash_function(strdate)];
 
     while (node != NULL)
     {
-        if (difftime(mktime(&(node->data.date)), mktime(&date) == 0.0))
+        if (difftime(mktime(&(node->data.date)), mktime(&date))==0.0)
         {
-            free(node);
             return node;
         }
 
         node = node->next;
     }
 
-    free(node);
     return NULL;
 }
 
