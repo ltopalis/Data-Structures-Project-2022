@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include "struct.h"
 #include "AVL.h"
 #include "main_functions.h"
 
@@ -152,15 +153,6 @@ int change_temp(Node *root)
     }
 
     return FALSE;
-}
-
-void print_equal(int number)
-{
-    int i;
-
-    for (i = 0; i < number; i++)
-        printf("=");
-    printf("\n");
 }
 
 void delete (Node *root)

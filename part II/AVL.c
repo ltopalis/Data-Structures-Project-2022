@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 #include <math.h>
+#include "struct.h"
 #include "AVL.h"
 
 int height(Node *N)

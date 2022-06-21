@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include "struct.h"
 #include "AVL.h"
+#include "hashing.h"
 #include "main_functions.h"
 #include "menu.h"
 
@@ -22,7 +24,7 @@ void clean()
         fprintf(stderr, "error cleaning console!\n");
 }
 
-void menu(Node *root)
+void menu(Node *root, DataItem **array)
 {
     int choice, check;
     while (TRUE)
@@ -51,7 +53,7 @@ void menu(Node *root)
             AVL(root);
             break;
         case 2:
-            printf("Under construction\n");
+            hashing(array);
             break;
         case 3:
             printf("Bye bye\n");
@@ -147,6 +149,60 @@ void avl_by_date(Node *root)
             delete (root);
             break;
         case 5:
+            return;
+        default:
+            break;
+        }
+
+        print_equal(44);
+        printf("\nPress enter to continue...\n");
+        fflush(stdin);
+        getc(stdin);
+        getc(stdin);
+        clean();
+    }
+}
+
+void hashing(DataItem **array)
+{
+    int choice, check;
+
+    init_hashing(array);
+    insert_from_file_hashing("ocean.csv", array);
+
+    while (TRUE)
+    {
+        do
+        {
+            print_equal(20);
+            printf("1. searching given a date\n");
+            printf("2. change temperature\n");
+            printf("3. delete given a date\n");
+            printf("4. back\n");
+            printf("choice? ");
+            check = scanf("%d", &choice);
+            check = (choice > 0 && choice < 5);
+            if (!check)
+            {
+                clean();
+                fprintf(stderr, "Should be between 1 and 4\n");
+                print_equal(25);
+            }
+        } while (!check);
+        clean();
+
+        switch (choice)
+        {
+        case 1:
+            user_search_hashing(array);
+            break;
+        case 2:
+            temp_change_hashing(array);
+            break;
+        case 3:
+            delete_node_hashing(array);
+            break;
+        case 4:
             return;
         default:
             break;

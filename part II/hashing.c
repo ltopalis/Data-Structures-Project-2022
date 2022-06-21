@@ -2,59 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include "struct.h"
+#include "hashing.h"
 
-#define size 1405
-#define LINE_SIZE 1405
-#define FALSE 0
-#define buckets 11
-
-struct table_data
-{
-    struct tm date;
-    double T_degC;
-};
-
-struct DataItem
-{
-    struct table_data data;
-    struct DataItem *next;
-    struct DataItem *prev;
-};
-
-typedef struct table_data table_data;
-typedef struct DataItem DataItem;
-
-int hash_function(char *date);
-void insert(table_data data, int key, DataItem *array[]);
-void init(DataItem **array);
-void insert_from_file(char *filename, DataItem *array[]);
-DataItem *search(DataItem **array, struct tm date);
-void print(DataItem **t);
-void temp_change(DataItem **array);
-void delete_node(DataItem **array);
-
-int main()
-{
-    DataItem *array[buckets], *t;
-    struct tm cl={0};
-
-    init(array);
-
-    insert_from_file("ocean.csv", array);
-    cl.tm_mday = 1;
-    cl.tm_mon = 5 - 1;
-    cl.tm_year = 2005 - 1900;
-    t = search(array,cl);
-    if(t)
-        printf("%d/%d/%d\n", t->data.date.tm_mon + 1, t->data.date.tm_mday, t->data.date.tm_year + 1900);
-    else 
-        printf("No record!\n");
-    //print(array);
-
-    exit(0);
-}
-
-int hash_function(char *date)
+int hash_function_hashing(char *date)
 {
     int i, sum;
 
@@ -65,7 +16,7 @@ int hash_function(char *date)
     return (sum % buckets);
 }
 
-void insert(table_data data, int key, DataItem *array[])
+void insert_hashing(table_data data, int key, DataItem *array[])
 {
     DataItem *newNode = (DataItem *)malloc(sizeof(DataItem));
     DataItem *current;
@@ -123,7 +74,7 @@ void insert(table_data data, int key, DataItem *array[])
     }
 }
 
-void init(DataItem **array)
+void init_hashing(DataItem **array)
 {
     int i;
 
@@ -131,7 +82,7 @@ void init(DataItem **array)
         array[i] = NULL;
 }
 
-void insert_from_file(char *filename, DataItem *array[])
+void insert_from_file_hashing(char *filename, DataItem *array[])
 {
     FILE *fp = NULL;
     char *pinakas = NULL;
@@ -165,22 +116,20 @@ void insert_from_file(char *filename, DataItem *array[])
         data.date.tm_min = 0;
         data.date.tm_sec = 0;
         data.date.tm_isdst = 0;
-        printf("%s\n", date_back);
-        insert(data, hash_function(date_back), array);
+        insert_hashing(data, hash_function_hashing(date_back), array);
     }
 
     fclose(fp);
     free(pinakas);
 }
 
-DataItem *search(DataItem **array, struct tm date)
+DataItem *search_hashing(DataItem **array, struct tm date)
 {
     char strdate[11] = {'0'};
     DataItem *node;
 
     strftime(strdate, 11, "%m/%d/%Y", &date);
-    printf("%d\n", hash_function(strdate));
-    node = array[hash_function(strdate)];
+    node = array[hash_function_hashing(strdate)];
 
     while (node != NULL)
     {
@@ -197,7 +146,7 @@ DataItem *search(DataItem **array, struct tm date)
     return NULL;
 }
 
-void print(DataItem **t)
+void print_hashing(DataItem **t)
 {
     int i;
     char d[11];
@@ -220,7 +169,7 @@ void print(DataItem **t)
     free(k);
 }
 
-void temp_change(DataItem **array)
+void temp_change_hashing(DataItem **array)
 {
     int d, m, y, choice;
     struct tm Date = {0};
@@ -250,7 +199,7 @@ void temp_change(DataItem **array)
     Date.tm_year = y - 1900;
 
     strftime(date, 11, "%m/%d/%Y", &Date);
-    node = search(array, Date);
+    node = search_hashing(array, Date);
 
     if (node == NULL)
     {
@@ -276,7 +225,7 @@ void temp_change(DataItem **array)
     return;
 }
 
-void delete_node(DataItem **array)
+void delete_node_hashing(DataItem **array)
 {
     struct tm Date = {0};
     int choice, m, d, y;
@@ -305,7 +254,7 @@ void delete_node(DataItem **array)
     Date.tm_year = y - 1900;
 
     strftime(strdate, 11, "%m/%d/%Y", &Date);
-    node = search(array, Date);
+    node = search_hashing(array, Date);
 
     if (node == NULL)
     {
@@ -327,4 +276,49 @@ void delete_node(DataItem **array)
         free(node);
         printf("The record has been successfully deleted!\n");
     }
+}
+
+void user_search_hashing(DataItem **array){
+    int check;
+    struct tm user_date;
+    DataItem *searching_node;
+    char time_str[11];
+
+    printf("Date to be searched\n");
+    do
+    {
+        printf("Give month: ");
+        check = scanf("%d", &user_date.tm_mon);
+        check = !(user_date.tm_mon > 0 && user_date.tm_mon < 13);
+    } while (check);
+
+    do
+    {
+        printf("Give day: ");
+        check = scanf("%d", &user_date.tm_mday);
+        check = !(user_date.tm_mday > 0 && user_date.tm_mday < 32);
+    } while (check);
+
+    do
+    {
+        printf("Give year: ");
+        check = scanf("%d", &user_date.tm_year);
+        check = !(user_date.tm_year > 0);
+    } while (check);
+
+    user_date.tm_year -= 1900;
+    user_date.tm_mon -= 1;
+    user_date.tm_hour = 0;
+    user_date.tm_min = 0;
+    user_date.tm_sec = 0;
+
+    searching_node = search_hashing(array, user_date);
+    print_equal(44);
+    if (searching_node == NULL)
+    {
+        printf("There's no record!\n");
+        return;
+    }
+    strftime(time_str, 11, "%m/%d/%Y", &searching_node->data.date);
+    printf("Date: %s\tTemperature: %.4lf\n", time_str, searching_node->data.T_degC);
 }
