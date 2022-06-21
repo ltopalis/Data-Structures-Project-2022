@@ -18,6 +18,7 @@ struct DataItem
 {
     struct table_data data;
     struct DataItem *next;
+    struct DataItem *prev;
 };
 
 typedef struct table_data table_data;
@@ -30,16 +31,25 @@ void insert_from_file(char *filename, DataItem *array[]);
 DataItem *search(DataItem **array, struct tm date);
 void print(DataItem **t);
 void temp_change(DataItem **array);
+void delete_node(DataItem **array);
 
 int main()
 {
-    DataItem *array[buckets];
-    struct tm mday;
+    DataItem *array[buckets], *t;
+    struct tm cl={0};
 
     init(array);
 
     insert_from_file("ocean.csv", array);
-    temp_change(array);
+    cl.tm_mday = 1;
+    cl.tm_mon = 5 - 1;
+    cl.tm_year = 2005 - 1900;
+    t = search(array,cl);
+    if(t)
+        printf("%d/%d/%d\n", t->data.date.tm_mon + 1, t->data.date.tm_mday, t->data.date.tm_year + 1900);
+    else 
+        printf("No record!\n");
+    //print(array);
 
     exit(0);
 }
@@ -85,6 +95,7 @@ void insert(table_data data, int key, DataItem *array[])
         array[key]->data.date.tm_isdst = data.date.tm_isdst;
         array[key]->data.T_degC = data.T_degC;
         array[key]->next = NULL;
+        array[key]->prev = NULL;
     }
     else
     {
@@ -107,6 +118,7 @@ void insert(table_data data, int key, DataItem *array[])
         current->next->data.date.tm_sec = data.date.tm_sec;
         current->next->data.date.tm_isdst = data.date.tm_isdst;
         current->next->data.T_degC = data.T_degC;
+        current->next->prev = current;
         current->next->next = NULL;
     }
 }
@@ -123,7 +135,7 @@ void insert_from_file(char *filename, DataItem *array[])
 {
     FILE *fp = NULL;
     char *pinakas = NULL;
-    char date_str[11];
+    char date_str[50], date_back[11];
     table_data data;
 
     pinakas = (char *)malloc(sizeof(char) * LINE_SIZE);
@@ -144,6 +156,7 @@ void insert_from_file(char *filename, DataItem *array[])
     while (fgets(pinakas, LINE_SIZE - 1, fp) != NULL)
     {
         strcpy(date_str, strtok(pinakas, ","));
+        strcpy(date_back, date_str);
         data.T_degC = atof(strtok(NULL, ","));
         data.date.tm_mon = atoi(strtok(date_str, "/")) - 1;
         data.date.tm_mday = atoi(strtok(NULL, "/"));
@@ -152,7 +165,8 @@ void insert_from_file(char *filename, DataItem *array[])
         data.date.tm_min = 0;
         data.date.tm_sec = 0;
         data.date.tm_isdst = 0;
-        insert(data, hash_function(date_str), array);
+        printf("%s\n", date_back);
+        insert(data, hash_function(date_back), array);
     }
 
     fclose(fp);
@@ -165,11 +179,14 @@ DataItem *search(DataItem **array, struct tm date)
     DataItem *node;
 
     strftime(strdate, 11, "%m/%d/%Y", &date);
+    printf("%d\n", hash_function(strdate));
     node = array[hash_function(strdate)];
 
     while (node != NULL)
     {
-        if (difftime(mktime(&(node->data.date)), mktime(&date))==0.0)
+        if (node->data.date.tm_mday == date.tm_mday &&
+            node->data.date.tm_mon == date.tm_mon &&
+            node->data.date.tm_year == date.tm_year)
         {
             return node;
         }
@@ -250,11 +267,64 @@ void temp_change(DataItem **array)
         d = scanf("%d", &choice);
     } while (!(choice == 1 || choice == 2));
 
-    if(choice == 1)
+    if (choice == 1)
     {
         node->data.T_degC = temp;
         printf("The temperature has been successfully updated!\n");
     }
 
     return;
+}
+
+void delete_node(DataItem **array)
+{
+    struct tm Date = {0};
+    int choice, m, d, y;
+    DataItem *node;
+    char strdate[11];
+
+    printf("Give the date, whose temperature you want to change\n");
+    do
+    {
+        printf("Month: ");
+        choice = scanf("%d", &m);
+    } while (!(m > 0 && m < 13));
+    do
+    {
+        printf("Day: ");
+        choice = scanf("%d", &d);
+    } while (!(d > 0 && d < 32));
+    do
+    {
+        printf("Year: ");
+        choice = scanf("%d", &y);
+    } while (!(y > 0));
+
+    Date.tm_mday = d;
+    Date.tm_mon = m - 1;
+    Date.tm_year = y - 1900;
+
+    strftime(strdate, 11, "%m/%d/%Y", &Date);
+    node = search(array, Date);
+
+    if (node == NULL)
+    {
+        printf("There's no such date\n");
+        return;
+    }
+
+    do
+    {
+        strftime(strdate, 11, "%m/%d/%Y", &node->data.date);
+        printf("Are you sure you want to delete the record %s %lf? (1=yes or 2=no) ", strdate, node->data.T_degC);
+        m = scanf("%d", &choice);
+    } while (choice != 1 && choice != 2);
+
+    if (choice == 1)
+    {
+        node->next->prev = node->prev;
+        node->prev->next = node->next;
+        free(node);
+        printf("The record has been successfully deleted!\n");
+    }
 }
