@@ -9,8 +9,6 @@ int main()
 {
     Node *root = NULL;
 
-    root = insert_from_file("ocean.csv", root);
-
     clean();
     menu(root);
 

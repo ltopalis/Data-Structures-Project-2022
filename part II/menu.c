@@ -66,6 +66,9 @@ void menu(Node *root)
 void AVL(Node *root)
 {
     int choice, check;
+
+    root = insert_from_file("ocean.csv", root);
+
     while (TRUE)
     {
         do
@@ -100,6 +103,7 @@ void AVL(Node *root)
             fprintf(stderr, "Error\n");
         }
     }
+    root = delete_AVL(root);
 }
 
 void avl_by_date(Node *root)

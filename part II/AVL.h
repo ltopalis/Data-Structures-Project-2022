@@ -44,5 +44,9 @@ int max(int a, int b);
 int check_allocation(void *p);
 Node *search(Node *root, time_t date);
 Node *node_delete(Node *root, time_t date);
+/* Delete the leaves of a tree, but it doesn't set root to NULL */
+void delete_AVL_recursive(Node *root);
+/* Delete the whole AVL tree */
+Node *delete_AVL(Node *root);
 
 #endif

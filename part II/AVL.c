@@ -151,7 +151,7 @@ Node *insert_from_file(char *filename, Node *root)
         temp.date.tm_hour = 0;                              /* hours, range 0 to 23             */
         temp.date.tm_wday = 0;                              /* day of the week, range 0 to 6    */
         temp.date.tm_yday = 0;                              /* day in the year, range 0 to 365  */
-        temp.date.tm_isdst = -1;                            /* daylight saving time             */
+        temp.date.tm_isdst = 0;                             /* daylight saving time             */
         root = insert(root, temp);
     }
 
@@ -206,6 +206,16 @@ int delete_left(Node *parent, table_data *elem)
     free(current);
     parent->left = NULL;
     return TRUE;
+}
+
+void delete_AVL_recursive(Node *root)
+{
+    if (root == NULL)
+        return;
+
+    delete_AVL_recursive(root->left);
+    delete_AVL_recursive(root->right);
+    free(root);
 }
 
 void printAVL(Node *root)
@@ -387,4 +397,10 @@ Node *node_delete(Node *root, time_t date)
     printf("\nThe record has been successfully deleted!\n");
 
     return root;
+}
+
+Node *delete_AVL(Node *root)
+{
+    delete_AVL_recursive(root);
+    return NULL;
 }
