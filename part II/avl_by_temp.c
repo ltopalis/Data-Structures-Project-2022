@@ -50,6 +50,8 @@ Node *RL_Rotate(Node *x);
 Node *insert_from_file_by_date(char *filename, Node *root);
 int check_allocation(void *p);
 void printAVLD(Node *root);
+void printMin(Node *root);
+void printMax(Node *root);
 
 int main()
 {
@@ -57,7 +59,9 @@ int main()
 
     root = insert_from_file_by_date("ocean.csv", root);
 
-    printAVLD(root);
+    printMin(root);
+    printf("\n\n\n");
+    printMax(root);
 
     exit(0);
 }
@@ -271,5 +275,46 @@ void printAVLD(Node *root)
     }
 
     printAVLD(root->right);
+    free(time_str);
+}
+
+void printMin(Node *root)
+{
+    char *time_str = (char *)malloc(sizeof(char) * 11);
+    DL *temp;
+
+    while (root->left)
+    {
+        root = root->left;
+    }
+
+    temp = root->key.date;
+    while (temp)
+    {
+        strftime(time_str, 11, "%m/%d/%Y", &temp->date);
+        printf("%s %05.2lf\n", time_str, root->key.T_degC);
+        temp = temp->next;
+    }
+
+    free(time_str);
+}
+
+void printMax(Node *root){
+    char *time_str = (char *)malloc(sizeof(char) * 11);
+    DL *temp;
+
+    while (root->right)
+    {
+        root = root->right;
+    }
+
+    temp = root->key.date;
+    while (temp)
+    {
+        strftime(time_str, 11, "%m/%d/%Y", &temp->date);
+        printf("%s %05.2lf\n", time_str, root->key.T_degC);
+        temp = temp->next;
+    }
+
     free(time_str);
 }
