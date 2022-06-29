@@ -13,7 +13,7 @@ struct dateList
     struct dateList *next;
 };
 
-struct table_data
+struct table_data_T
 {
     struct tm d;
     double T_degC;
@@ -25,39 +25,39 @@ struct table_data_by_temp
     double T_degC;
 };
 
-struct Node
+struct Node_T
 {
     struct table_data_by_temp key; // table_data key
-    struct Node *left;             //
-    struct Node *right;
+    struct Node_T *left;             //
+    struct Node_T *right;
     int height;
 };
 
-typedef struct Node Node;
+typedef struct Node_T Node_T;
 typedef struct table_data_by_temp TD;
 typedef struct dateList DL;
-typedef struct table_data table_data;
+typedef struct table_data_T table_data_T;
 
-Node *insert_temp(Node *node, table_data key);
-Node *newNode(table_data key);
-int height(Node *N);
+Node_T *insert_temp(Node_T *node, table_data_T key);
+Node_T *newNode_T(table_data_T key);
+int height_T(Node_T *N);
 int max(int a, int b);
-int getBalance(Node *N);
-Node *rightRotate(Node *y);
-Node *leftRotate(Node *x);
-Node *LR_Rotate(Node *x);
-Node *RL_Rotate(Node *x);
-Node *insert_from_file_by_date(char *filename, Node *root);
+int getBalance(Node_T *N);
+Node_T *rightRotate_T(Node_T *y);
+Node_T *leftRotate_T(Node_T *x);
+Node_T *LR_Rotate_T(Node_T *x);
+Node_T *RL_Rotate_T(Node_T *x);
+Node_T *insert_from_file_by_temp(char *filename, Node_T *root);
 int check_allocation(void *p);
-void printAVLD(Node *root);
-void printMin(Node *root);
-void printMax(Node *root);
+void printAVLD(Node_T *root);
+void printMin(Node_T *root);
+void printMax(Node_T *root);
 
 int main()
 {
-    Node *root = NULL;
+    Node_T *root = NULL;
 
-    root = insert_from_file_by_date("ocean.csv", root);
+    root = insert_from_file_by_temp("ocean.csv", root);
 
     printMin(root);
     printf("\n\n\n");
@@ -66,13 +66,13 @@ int main()
     exit(0);
 }
 
-Node *insert_temp(Node *node, table_data key)
+Node_T *insert_temp(Node_T *node, table_data_T key)
 {
     DL *temp = NULL;
     int balance;
 
     if (node == NULL)
-        return (newNode(key));
+        return (newNode_T(key));
 
     if (key.T_degC < node->key.T_degC)
         node->left = insert_temp(node->left, key);
@@ -100,34 +100,34 @@ Node *insert_temp(Node *node, table_data key)
         temp->next = NULL;
     }
 
-    node->height = height(node);
+    node->height = height_T(node);
 
     balance = getBalance(node);
 
     if (balance > 1 && key.T_degC < node->left->key.T_degC)
-        return rightRotate(node);
+        return rightRotate_T(node);
 
     if (balance < -1 && key.T_degC > node->right->key.T_degC)
-        return leftRotate(node);
+        return leftRotate_T(node);
 
     if (balance > 1 && key.T_degC > node->left->key.T_degC)
     {
-        node->left = leftRotate(node->left);
-        return rightRotate(node);
+        node->left = leftRotate_T(node->left);
+        return rightRotate_T(node);
     }
 
     if (balance < -1 && key.T_degC < node->right->key.T_degC)
     {
-        node->right = rightRotate(node->right);
-        return leftRotate(node);
+        node->right = rightRotate_T(node->right);
+        return leftRotate_T(node);
     }
 
     return node;
 }
 
-Node *newNode(table_data key)
+Node_T *newNode_T(table_data_T key)
 {
-    Node *node = (Node *)malloc(sizeof(Node));
+    Node_T *node = (Node_T *)malloc(sizeof(Node_T));
     node->key.T_degC = key.T_degC;
     node->key.date = (DL *)malloc(sizeof(DL));
     node->key.date->date = key.d;
@@ -138,11 +138,11 @@ Node *newNode(table_data key)
     return (node);
 }
 
-int height(Node *N)
+int height_T(Node_T *N)
 {
     if (N == NULL)
         return 0;
-    return 1 + max(height(N->left), height(N->right));
+    return 1 + max(height_T(N->left), height_T(N->right));
 }
 
 int max(int a, int b)
@@ -153,59 +153,59 @@ int max(int a, int b)
         return b;
 }
 
-int getBalance(Node *N)
+int getBalance(Node_T *N)
 {
     if (N == NULL)
         return 0;
-    return height(N->left) - height(N->right);
+    return height_T(N->left) - height_T(N->right);
 }
 
-Node *rightRotate(Node *y)
+Node_T *rightRotate_T(Node_T *y)
 {
-    Node *x = y->left;
-    Node *T2 = x->right;
+    Node_T *x = y->left;
+    Node_T *T2 = x->right;
 
     x->right = y;
     y->left = T2;
 
-    y->height = height(y);
-    x->height = height(x);
+    y->height = height_T(y);
+    x->height = height_T(x);
 
     return x;
 }
 
-Node *leftRotate(Node *x)
+Node_T *leftRotate_T(Node_T *x)
 {
-    Node *y = x->right;
-    Node *T2 = y->left;
+    Node_T *y = x->right;
+    Node_T *T2 = y->left;
 
     y->left = x;
     x->right = T2;
 
-    x->height = height(x);
-    y->height = height(y);
+    x->height = height_T(x);
+    y->height = height_T(y);
 
     return y;
 }
 
-Node *LR_Rotate(Node *x)
+Node_T *LR_Rotate_T(Node_T *x)
 {
-    x->left = leftRotate(x->left);
+    x->left = leftRotate_T(x->left);
 
-    return rightRotate(x);
+    return rightRotate_T(x);
 }
 
-Node *RL_Rotate(Node *x)
+Node_T *RL_Rotate_T(Node_T *x)
 {
-    x->right = rightRotate(x->right);
+    x->right = rightRotate_T(x->right);
 
-    return leftRotate(x);
+    return leftRotate_T(x);
 }
 
-Node *insert_from_file_by_date(char *filename, Node *root)
+Node_T *insert_from_file_by_temp(char *filename, Node_T *root)
 {
     FILE *fp = NULL;
-    table_data temp;
+    table_data_T temp;
     char *pinakas = (char *)malloc(sizeof(char) * LINE_SIZE);
     char *date_str = (char *)malloc(sizeof(char) * (10 + 1));
     if (check_allocation((char *)pinakas) == FALSE)
@@ -257,7 +257,7 @@ int check_allocation(void *p)
     return TRUE;
 }
 
-void printAVLD(Node *root)
+void printAVLD(Node_T *root)
 {
     char *time_str = (char *)malloc(sizeof(char) * 11);
     DL *temp;
@@ -278,7 +278,7 @@ void printAVLD(Node *root)
     free(time_str);
 }
 
-void printMin(Node *root)
+void printMin(Node_T *root)
 {
     char *time_str = (char *)malloc(sizeof(char) * 11);
     DL *temp;
@@ -299,7 +299,7 @@ void printMin(Node *root)
     free(time_str);
 }
 
-void printMax(Node *root){
+void printMax(Node_T *root){
     char *time_str = (char *)malloc(sizeof(char) * 11);
     DL *temp;
 
