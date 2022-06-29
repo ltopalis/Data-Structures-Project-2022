@@ -1,23 +1,15 @@
 compiler := gcc
 flags := -Wall -Wextra -O3
-objectFiles := struct.o AVL.o main_functions.o hashing.o menu.o main.o
-neccessary := struct AVL main_functions hashing menu main
+files := struct.c AVL.c avl_by_temp.c main_functions.c hashing.c menu.c main.c
 
 .PHONY: compile clean delete
 
-all: compile clean
+all: compile
 
-compile: ${neccessary}
+compile:
 	@echo "Compiling..."
-	@${compiler} ${flags} ${objectFiles} -o part2 -lm
+	@${compiler} ${flags} ${files} -o part2 -lm
 	@echo "Executable file has been created"
-
-${neccessary}:
-	@${compiler} ${flags} -c $@.c
-	
-clean:
-	@echo "Removing object files..."
-	@rm *.o
 
 delete:
 	@rm part2
