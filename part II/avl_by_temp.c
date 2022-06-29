@@ -2,69 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-
-#define LINE_SIZE 100
-#define TRUE 1
-#define FALSE 0
-
-struct dateList
-{
-    struct tm date;
-    struct dateList *next;
-};
-
-struct table_data_T
-{
-    struct tm d;
-    double T_degC;
-};
-
-struct table_data_by_temp
-{
-    struct dateList *date;
-    double T_degC;
-};
-
-struct Node_T
-{
-    struct table_data_by_temp key; // table_data key
-    struct Node_T *left;             //
-    struct Node_T *right;
-    int height;
-};
-
-typedef struct Node_T Node_T;
-typedef struct table_data_by_temp TD;
-typedef struct dateList DL;
-typedef struct table_data_T table_data_T;
-
-Node_T *insert_temp(Node_T *node, table_data_T key);
-Node_T *newNode_T(table_data_T key);
-int height_T(Node_T *N);
-int max(int a, int b);
-int getBalance(Node_T *N);
-Node_T *rightRotate_T(Node_T *y);
-Node_T *leftRotate_T(Node_T *x);
-Node_T *LR_Rotate_T(Node_T *x);
-Node_T *RL_Rotate_T(Node_T *x);
-Node_T *insert_from_file_by_temp(char *filename, Node_T *root);
-int check_allocation(void *p);
-void printAVLD(Node_T *root);
-void printMin(Node_T *root);
-void printMax(Node_T *root);
-
-int main()
-{
-    Node_T *root = NULL;
-
-    root = insert_from_file_by_temp("ocean.csv", root);
-
-    printMin(root);
-    printf("\n\n\n");
-    printMax(root);
-
-    exit(0);
-}
+#include "struct.h"
+#include "avl_by_temp.h"
 
 Node_T *insert_temp(Node_T *node, table_data_T key)
 {
@@ -102,7 +41,7 @@ Node_T *insert_temp(Node_T *node, table_data_T key)
 
     node->height = height_T(node);
 
-    balance = getBalance(node);
+    balance = getBalance_T(node);
 
     if (balance > 1 && key.T_degC < node->left->key.T_degC)
         return rightRotate_T(node);
@@ -145,15 +84,7 @@ int height_T(Node_T *N)
     return 1 + max(height_T(N->left), height_T(N->right));
 }
 
-int max(int a, int b)
-{
-    if (a > b)
-        return a;
-    else
-        return b;
-}
-
-int getBalance(Node_T *N)
+int getBalance_T(Node_T *N)
 {
     if (N == NULL)
         return 0;
@@ -246,17 +177,6 @@ Node_T *insert_from_file_by_temp(char *filename, Node_T *root)
     return root;
 }
 
-int check_allocation(void *p)
-{
-    if (!p)
-    {
-        fprintf(stderr, "Error allocating memory!");
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
 void printAVLD(Node_T *root)
 {
     char *time_str = (char *)malloc(sizeof(char) * 11);
@@ -292,14 +212,15 @@ void printMin(Node_T *root)
     while (temp)
     {
         strftime(time_str, 11, "%m/%d/%Y", &temp->date);
-        printf("%s %05.2lf\n", time_str, root->key.T_degC);
+        printf("%s\t%05.2lf\n", time_str, root->key.T_degC);
         temp = temp->next;
     }
 
     free(time_str);
 }
 
-void printMax(Node_T *root){
+void printMax(Node_T *root)
+{
     char *time_str = (char *)malloc(sizeof(char) * 11);
     DL *temp;
 
@@ -312,7 +233,7 @@ void printMax(Node_T *root){
     while (temp)
     {
         strftime(time_str, 11, "%m/%d/%Y", &temp->date);
-        printf("%s %05.2lf\n", time_str, root->key.T_degC);
+        printf("%s\t%05.2lf\n", time_str, root->key.T_degC);
         temp = temp->next;
     }
 

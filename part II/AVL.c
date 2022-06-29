@@ -13,14 +13,6 @@ int height(Node *N)
     return 1 + max(height(N->left), height(N->right));
 }
 
-int max(int a, int b)
-{
-    if (a > b)
-        return a;
-    else
-        return b;
-}
-
 Node *newNode(table_data key)
 {
     Node *node = (Node *)malloc(sizeof(Node));
@@ -232,17 +224,6 @@ void printAVL(Node *root)
 
     printAVL(root->right);
     free(time_str);
-}
-
-int check_allocation(void *p)
-{
-    if (!p)
-    {
-        fprintf(stderr, "Error allocating memory!");
-        return FALSE;
-    }
-
-    return TRUE;
 }
 
 Node *search(Node *root, time_t date)

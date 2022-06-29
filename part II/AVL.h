@@ -1,15 +1,13 @@
 #ifndef AVL_H
 
 #define AVL_H
-#define TRUE 1
-#define FALSE 0
 #define DATA 1405
 #define TABLE_SIZE 1405
 
 struct Node
 {
     struct table_data key; // table_data key
-    struct Node *left;     
+    struct Node *left;
     struct Node *right;
     int height;
 };
@@ -33,8 +31,6 @@ int delete_right(Node *parent, table_data *elem);
 int delete_left(Node *parent, table_data *elem);
 void printAVL(Node *root);
 int getBalance(Node *N);
-int max(int a, int b);
-int check_allocation(void *p);
 Node *search(Node *root, time_t date);
 Node *node_delete(Node *root, time_t date);
 /* Delete the leaves of a tree, but it doesn't set root to NULL */

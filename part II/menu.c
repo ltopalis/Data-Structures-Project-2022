@@ -6,6 +6,7 @@
 #include "AVL.h"
 #include "hashing.h"
 #include "main_functions.h"
+#include "avl_by_temp.h"
 #include "menu.h"
 
 void clean()
@@ -24,7 +25,7 @@ void clean()
         fprintf(stderr, "error cleaning console!\n");
 }
 
-void menu(Node *root, DataItem **array)
+void menu(Node *root, Node_T *root_T, DataItem **array)
 {
     int choice, check;
     while (TRUE)
@@ -50,7 +51,7 @@ void menu(Node *root, DataItem **array)
         switch (choice)
         {
         case 1:
-            AVL(root);
+            AVL(root, root_T);
             break;
         case 2:
             hashing(array);
@@ -65,11 +66,9 @@ void menu(Node *root, DataItem **array)
     }
 }
 
-void AVL(Node *root)
+void AVL(Node *root, Node_T *root_T)
 {
     int choice, check;
-
-    root = insert_from_file("ocean.csv", root);
 
     while (TRUE)
     {
@@ -94,10 +93,13 @@ void AVL(Node *root)
         switch (choice)
         {
         case 1:
+            root = insert_from_file("ocean.csv", root);
             avl_by_date(root);
+            root = delete_AVL(root);
+
             break;
         case 2:
-            printf("Under Construction\n");
+            avl_by_temp(root_T);
             break;
         case 3:
             return;
@@ -105,7 +107,6 @@ void AVL(Node *root)
             fprintf(stderr, "Error\n");
         }
     }
-    root = delete_AVL(root);
 }
 
 void avl_by_date(Node *root)
@@ -201,6 +202,56 @@ void hashing(DataItem **array)
             break;
         case 3:
             delete_node_hashing(array);
+            break;
+        case 4:
+            return;
+        default:
+            break;
+        }
+
+        print_equal(44);
+        printf("\nPress enter to continue...\n");
+        fflush(stdin);
+        getc(stdin);
+        getc(stdin);
+        clean();
+    }
+}
+
+void avl_by_temp(Node_T *root)
+{
+    int choice, check;
+    while (TRUE)
+    {
+        do
+        {
+            print_equal(20);
+            printf("1. print AVL\n");
+            printf("2. print the coldest dates\n");
+            printf("3. print the hottest dates\n");
+            printf("4. back\n");
+            printf("choice? ");
+            check = scanf("%d", &choice);
+            check = (choice > 0 && choice < 5);
+            if (!check)
+            {
+                clean();
+                fprintf(stderr, "Should be between 1 and 4\n");
+                print_equal(25);
+            }
+        } while (!check);
+        clean();
+
+        switch (choice)
+        {
+        case 1:
+            printAVLD(root);
+            break;
+        case 2:
+            printMin(root);
+            break;
+        case 3:
+            printMax(root);
             break;
         case 4:
             return;

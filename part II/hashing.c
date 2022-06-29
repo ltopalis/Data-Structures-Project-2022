@@ -278,7 +278,8 @@ void delete_node_hashing(DataItem **array)
     }
 }
 
-void user_search_hashing(DataItem **array){
+void user_search_hashing(DataItem **array)
+{
     int check;
     struct tm user_date;
     DataItem *searching_node;
