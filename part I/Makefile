@@ -7,7 +7,7 @@ neccessary := fundamentals file_manager sort_functions searching exercise01_inse
 
 all: compile clean
 
-compile: ${neccessary} tester
+compile: ${neccessary}
 	@echo "Compiling..."
 	@${compiler} ${flags} ${objectFiles}             exercise01_insertion_sort.o -o insertionSort
 	@${compiler} ${flags} ${objectFiles}             exercise01_quicksort.o      -o quickSort
@@ -15,18 +15,14 @@ compile: ${neccessary} tester
 	@${compiler} ${flags} ${objectFiles}             exercise02_countingSort.o   -o countingSort
 	@${compiler} ${flags} ${objectFiles}             exercise02_heapSort.o       -o heapSort
 	@${compiler} ${flags} ${objectFiles} searching.o exercise04.o                -o BIS -lm
-	@${compiler} ${flags} ${objectFiles} searching.o tester.o                    -o tester -lm
 	@echo "Executable files have been created!"
 
 ${neccessary}:
 	@${compiler} ${flags} -c $@.c
-
-tester: fundamentals file_manager sort_functions searching
-	@${compiler} ${flags} -c tester.c
 
 clean: 
 	@echo "Removing object files..."
 	@rm *.o
 
 delete:
-	@rm insertionSort quickSort interpolation countingSort heapSort BIS tester
+	@rm insertionSort quickSort interpolation countingSort heapSort BIS
