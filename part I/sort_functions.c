@@ -110,7 +110,7 @@ void Heapify(table_data array[], int node, int heap_size)
 	if (left < heap_size && array[left].PO4uM > array[bigger].PO4uM)
 		bigger = left;
 
-	// If right child is bigger than (int) bigger
+	// If right child is bigger than bigger
 	if (right < heap_size && array[right].PO4uM > array[bigger].PO4uM)
 		bigger = right;
 
